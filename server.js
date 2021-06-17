@@ -1,12 +1,21 @@
-const WebSocket = require("ws");
 
-const wss = new WebSocket.Server({port : 5000});
 
-wss.on("connection", ws =>{
-    console.log("new client connected!");
- 
-    ws.on("close", () => {
-        console.log("client has disconnected!");
+
+
+let video1 = document.querySelector("#video");
+
+if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video: true, audio: true}). then((stream) => {
+       video1.srcObject = stream;
+       video1.play();
     });
-});
+}
 
+let video2 = document.querySelector("#video1");
+
+if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video: true, audio: true}). then((stream) => {
+       video2.srcObject = stream;
+       video2.play();
+    });
+}
