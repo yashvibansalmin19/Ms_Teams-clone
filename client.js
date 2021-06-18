@@ -31,7 +31,7 @@ var isCaller;
 
 // Connecting the socket.io server
 
-var socket = io.connect();
+var socket = io();
 
 // Adding click event to the button
 
@@ -89,25 +89,15 @@ socket.on('ready', function(){
         // Adds event listeners to newly created object
 
         rtcPeerConnection.onicecandidate = onIceCandidate;
-        rtcPeerConnection.ontrack = onAddStream;
+        rtcPeerConnection.onaddstream = onAddStream;
 
         // Adds current local stream to the object
-        rtcPeerConnection.addTrack(localStream.getTracks()[0], localStream);
-        rtcPeerConnection.addTrack(localStream.getTracks()[1], localStream);
-
+        
+        rtcPeerConnection.addStream(localStream.getTracks()[0], localStream);
+        
         // Prepares an offer
 
-        rtcPeerConnection.createOffer().then(sessionDescription => {
-            rtcPeerConnection.setLocalDescription(sessionDescription);
-            socket.emit('offer', {
-                type: 'offer',
-                sdp: sessionDescription,
-                room: roomNumber
-            });
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        rtcPeerConnection.createOffer(setLocalAndOffer, function(e){console.group(e)});
     }
 });
 
@@ -123,27 +113,19 @@ socket.on('offer', function(event){
         // Adds event listeners to newly ceated object
 
         rtcPeerConnection.onicecandidate = onIceCandidate;
-        rtcPeerConnection.addtrack = onAddStream;
+        rtcPeerConnection.onaddStream = onAddStream;
 
         // Adds current local stream to the object
 
-        rtcPeerConnection.addTrack(localStream.getTracks()[0], localStream);
-        rtcPeerConnection.addTrack(localStream.getTracks()[1], localStream);
+        rtcPeerConnection.addTrack(localStream);
+        
+        // Stores the offer as remote description
         
         rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
+        
         // Prepares an answer
 
-        rtcPeerConnection.createAnswer().then(sessionDescription => {
-            rtcPeerConnection.setLocalDescription(sessionDescription);
-            socket.emit('answer', {
-                type: 'answer',
-                sdp: sessionDescription,
-                room: roomNumber
-            });
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        rtcPeerConnection.createAnswer(setLocalAndanswer, function(e){console.log(e)});
     }
 });
 
@@ -153,24 +135,24 @@ socket.on('answer', function(event){
      
     // Stores it as remote description
 
-    rtcpeerConnection.setRemoteDescription(new RTCSessionDescription (event));
+    rtcPeerConnection.setRemoteDescription(new RTCSessionDescription (event));
 });
 
 // When server emits 'candidate'
 
-// socket.on('candidate', function(event){
+socket.on('candidate', function(event){
          
-//     // Craetes a candidate object
+    // Craetes a candidate object
 
-//     var candidate = new RTCIceCandidate({
-//         sdpMLineIndex: event.label,
-//         candidate: event.candidate
-//     });
+    var candidate = new RTCIceCandidate({
+        sdpMLineIndex: event.label,
+        candidate: event.candidate
+    });
 
-//     // Stores candidate
+    // Stores candidate
 
-//     rtcPeerConnection.addIceCandidate(candidate);
-// });
+    rtcPeerConnection.addIceCandidate(candidate);
+});
 
 // When a user receives the other user's video and audio stream
 
@@ -198,22 +180,22 @@ function onIceCandidate(event){
 
 // Stores offer and sends messge to the server
 
-// function setLocalAndOffer(sessionDescription){
-//     rtcPeerConnection.setLocalDescription(sessionDescription);
-//     socket.emit('offer',{
-//         type: 'offer',
-//         sdp: sessionDescription,
-//         room: roomNumber
-//     });
-// }
+function setLocalAndOffer(sessionDescription){
+    rtcPeerConnection.setLocalDescription(sessionDescription);
+    socket.emit('offer',{
+        type: 'offer',
+        sdp: sessionDescription,
+        room: roomNumber
+    });
+}
 
 // // Stores answer and sends message to the server
 
-// function setLocalAndAnswer (sessionDescription){
-//     rtcPeerConnection.setLocalDescription(sessionDescription);
-//     socket.emit('answer', {
-//         type: 'answer',
-//         sdp: sessionDescription,
-//         room: roomNumber
-//     });
-// }
+function setLocalAndAnswer (sessionDescription){
+    rtcPeerConnection.setLocalDescription(sessionDescription);
+    socket.emit('answer', {
+        type: 'answer',
+        sdp: sessionDescription,
+        room: roomNumber
+    });
+}

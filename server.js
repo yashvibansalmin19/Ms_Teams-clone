@@ -2,7 +2,7 @@
 
 //importing required libraries
 
-const express = require('express');
+var express = require('express');
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
@@ -12,9 +12,7 @@ const port = process.env.PORT || 5500;
 //static hoting using express
 
 app.use(express.static('public'));
-app.get("/", function(req, res){
-	res.render("index.html");
-});
+
 // Signalling handlers
 
 io.on('connection', function(socket){
