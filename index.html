@@ -12,32 +12,23 @@
 
     <body style= "background-color:rgb(0, 217, 255)">
         <h1 style="color:rgba(255, 0, 0, 0.945);">This is a video call</h1>
-        <h2 style="color:rgb(255, 0, 0, 0.945);"> Is it working?</h2>
-        <h2 style="color:rgb(255, 0, 0, 0.945);">Yes! it is.</h2>
+      
 
-        <!-- Meeting start form -->
-        <form name="start" action="index2.html">
-            <label for="key" style="color:rgb(17, 0, 255);"> Enter the meeting code: </label>
-            <input type="Code"  id="key" name="Key" placeholder = "XYZ123"
-            pattren="[A-Z]{3}-[0-9]{3}"><br><br>
+        <div id="selectRoom">
+            <label style="color:rgb(17, 0, 255);"> Enter the meeting room: </label>
+            <input id="roomNumber" type="text"  placeholder = "XYZ123"
+            pattren="[a-z]{3}-[0-9]{3}"/><br><br>
+            <button id="goToRoom" type="submit">start meeting</button>
+        </div>
+        
+        <div id="consultingRoom" style="display:none">
+            <video id="localVideo" autoplay></video>   
+            <video id="remoteVideo" autoplay></video>  
+        </div>    
             
-            <button class="start meeting" type="submit">start meeting</button>
-        </form>
-  
-        <!-- div with messages -->
-        <div id="messages"></div>
+        <script src="http://localhost:5500/socket.io/socket.io.js"></script>
+        <script src="client.js"></script>
     
-    <!-- <script>
-        const ws = new WebSocket('ws://localhost:5000');
-
-        ws.addEventListener("open", () => {
-        console.log("We are connected to the server!");
-        });
-
-
-    </script> -->
-
     </body>
-
 
 </html>
