@@ -16,7 +16,7 @@ app.get('/', (req,res)=>{
 //listener
 
 http.listen(5500, function(){
-    console.log(`server running on http://localhost:5500`) ;
+    console.log('server running on http://localhost:5500') ;
 });
 
 // Signalling handlers
@@ -27,29 +27,31 @@ io.on('connection', function(socket){
     // When clients emits create or join
 
     socket.on('create or join', function (room){
-        console.log('create or join room', room);
 
-        var myRoom = io.sockets.adapter.rooms[room] || {length:0};
-        var numClients = myRoom.length;
-        console.log(room, 'has', numClients, 'clients');
+        var myRoom = io.sockets.adapter.rooms[room];
+        var numClients = myRoom ? myRoom.length : 0;
+        //console.log(room, 'has', numClients, 'clients');
         
         // These events are emitted only to the sender socket.
 
         if(numClients == 0){ // No users in the room
+          console.log('creating room', room);  
           socket.join(room);
           socket.emit('created', room);
         }
         else if(numClients == 1){  // One user is already in the room
+            console.log('joining room', room); 
             socket.join(room);
             socket.emit('joined', room);
         }
         else{  // Two participants are already in the room
+            console.log('cannot create a room', room); 
             socket.emit('full', room);
         }
-
-    });
+    })
 
     // Relay only handlers
+
     // These events are emitted to all the sockets connected to the same room except the sender.
     
     socket.on('ready', function (room){

@@ -49,7 +49,7 @@ buttonGoToRoom.onclick = function(){
     }
 };
 
-// When server emits 'created'*
+// When server emits 'created'
 
 socket.on('created', function(room){
 

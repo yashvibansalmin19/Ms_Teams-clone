@@ -33,32 +33,3 @@ header {
     cursor: pointer;
     margin: 0px;
   }
-
-input {
-    padding: 25x;
-
-}
-.video-position {
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  #ConsultingRoom {
-    width: 100%;
-    background-color: black;
-  }
-
-#localVideo {
-    position: absolute;
-    height: 30%;
-    width: 30%;
-    bottom: 0px;
-    left: 0px;
-  }
-
-#remoteVideo {
-    height: 100%;
-    width: 100%;
-  }
