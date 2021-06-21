@@ -1,23 +1,22 @@
-'use strict'
-
 //importing required libraries
 
 const express = require('express');
 const app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+app.set('view engine','ejs') ;
+//static hoting using express.
 
-//static hoting using express
+app.use(express.static('public')) ;
 
-app.use(express.static('public'));
+app.get('/', (req,res)=>{
+    res.render('index') ;
+})
 
-//Define a route
+//listener
 
-app.get("/", function(req, res){
-
-    // Render a view on this route 
-
-	res.render("index.html");
+http.listen(5500, function(){
+    console.log(`server running on http://localhost:5500`) ;
 });
 
 // Signalling handlers
@@ -68,10 +67,4 @@ io.on('connection', function(socket){
     socket.on('answer', function(event){
         socket.broadcast.to(even.room).emit('answer', event.sdp);
     });
-});
-
-//listener
-
-http.listen(5500, function(){
-    console.log('Server listening on', 5500);
 });

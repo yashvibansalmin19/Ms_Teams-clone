@@ -14,6 +14,13 @@ var localStream;
 var remoteStream;
 var rtcPeerConnection;
 
+// Connecting the socket.io server
+
+var socket = io();
+
+var streamConstraints = {audio: true, video: true};
+var isCaller;
+
 // STUN and TURN Servers
 
 var iceServers = {
@@ -26,20 +33,15 @@ var iceServers = {
     ],
 }
 
-var streamConstraints = {audio: true, video: true};
-var isCaller;
-
-// Connecting the socket.io server
-
-var socket = io();
-
 // Adding click event to the button
 
 buttonGoToRoom.onclick = function(){
     if(inputRoomNumber.value==''){
         alert("Please enter a room number");
+
     }
     else{
+        console.log('Hello');
         roomNumber = inputRoomNumber.value;  // Taking value from the element
         socket.emit('create or join', roomNumber); //Sending message to the server
         divSelectRoom.style = "display: none"; // Hide select room division
@@ -47,7 +49,7 @@ buttonGoToRoom.onclick = function(){
     }
 };
 
-// When server emits 'created'
+// When server emits 'created'*
 
 socket.on('created', function(room){
 
