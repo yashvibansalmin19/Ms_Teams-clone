@@ -2,16 +2,23 @@
 
 //importing required libraries
 
-var express = require('express');
+const express = require('express');
 const app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-const port = process.env.PORT || 5500;
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
 //static hoting using express
 
 app.use(express.static('public'));
+
+//Define a route
+
+app.get("/", function(req, res){
+
+    // Render a view on this route 
+
+	res.render("index.html");
+});
 
 // Signalling handlers
 
@@ -65,6 +72,6 @@ io.on('connection', function(socket){
 
 //listener
 
-server.listen(port || 5500, function(){
-    console.log('Server listening on', port);
+http.listen(5500, function(){
+    console.log('Server listening on', 5500);
 });

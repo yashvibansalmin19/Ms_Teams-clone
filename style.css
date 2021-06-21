@@ -1,0 +1,64 @@
+header {
+    padding: 50px;
+    text-align: center;
+    
+    color: white;
+    font-size: 50px;
+  }
+
+  html {
+    background: url(https://i.ytimg.com/vi/7dkrwPrmH-Y/maxresdefault.jpg) no-repeat center fixed;
+    background-size: cover;
+  }
+
+  label {
+    text-align: right;
+    color: white;
+    font-size: 30px;
+    vertical-align: middle;
+    margin:auto;
+    width:auto;
+  }
+   
+  button {
+    display: inline-block;
+    border-radius: 6px;
+    background-color: hsl(200, 31%, 38%);
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    width: 150px;
+    cursor: pointer;
+    margin: 0px;
+  }
+
+input {
+    padding: 25x;
+
+}
+.video-position {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #ConsultingRoom {
+    width: 100%;
+    background-color: black;
+  }
+
+#localVideo {
+    position: absolute;
+    height: 30%;
+    width: 30%;
+    bottom: 0px;
+    left: 0px;
+  }
+
+#remoteVideo {
+    height: 100%;
+    width: 100%;
+  }

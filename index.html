@@ -2,33 +2,35 @@
 
 <html lang="en">
 
-    <head>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-           
-        <title>Connect</title>
-
+    <head> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CONNECT</title>
+        <link rel="stylesheet" href="style.css">
     </head>
+    
+    <body>
+        <header style="height: max-content;" >
+            <div id="selectRoom"></div>
+            
+                <label style="font-family: Arial, Helvetica, sans-serif;">ENTER CODE</label><br></br>
+                <input id="roomNumber" type="text" size="30px" placeholder = "#123" pattren="[#]{1}[0-9]{3}"/><br></br>
+                <button id="goToRoom" type="submit">START MEETING</button>
+            
+            </div>       
+        </header>
 
-    <body style= "background-color:rgb(0, 217, 255)">
-        <h1 style="color:rgba(255, 0, 0, 0.945);">This is a video call</h1>
-      
-
-        <div id="selectRoom">
-            <label style="color:rgb(17, 0, 255);"> Enter the meeting room: </label>
-            <input id="roomNumber" type="text"  placeholder = "XYZ123"
-            pattren="[a-z]{3}-[0-9]{3}"/><br><br>
-            <button id="goToRoom" type="submit">start meeting</button>
-        </div>
-        
-        <div id="consultingRoom" style="display:none">
+        <div id="consultingRoom" class=”video-position”>
             <video id="localVideo" autoplay></video>   
             <video id="remoteVideo" autoplay></video>  
         </div>    
-        
+  
         <script src="/socket.io/socket.io.js"></script>
         <script src="client.js"></script>
     
     </body>
 
 </html>
+
+<html>
+

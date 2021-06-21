@@ -93,7 +93,7 @@ socket.on('ready', function(){
 
         // Adds current local stream to the object
         
-        rtcPeerConnection.addStream(localStream.getTracks()[0], localStream);
+        rtcPeerConnection.addStream(localStream);
         
         // Prepares an offer
 
