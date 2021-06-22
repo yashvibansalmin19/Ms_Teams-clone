@@ -1,29 +1,32 @@
 // Getting refrence to the webpage elements
 
-var divSelectRoom = document.getElementById("selectRoom");
-var divConsultingRoom = document.getElementById("consultingRoom");
-var inputRoomNumber = document.getElementById("roomNumber");
-var buttonGoToRoom = document.getElementById("goToRoom");
-var localVideo = document.getElementById("localVideo");
-var remoteVideo = document.getElementById("remoteVideo");
+let divSelectRoom = document.getElementById("selectRoom");
+let divConsultingRoom = document.getElementById("consultingRoom");
+let inputRoomNumber = document.getElementById("roomNumber");
+let buttonGoToRoom = document.getElementById("goToRoom");
+let localVideo = document.getElementById("localVideo");
+let remoteVideo = document.getElementById("remoteVideo");
 
-// establshing global variables
+// establshing global letiables
 
-var roomNumber;
-var localStream;
-var remoteStream;
-var rtcPeerConnection;
+let roomNumber;
+let localStream;
+let remoteStream;
+let rtcPeerConnection;
+let isCaller=false;
 
 // Connecting the socket.io server
 
-var socket = io();
+let socket = io();
 
-var streamConstraints = {audio: true, video: true};
-var isCaller;
+let streamConstraints = {
+    audio: false, 
+    video: true
+};
 
 // STUN and TURN Servers
 
-var iceServers = {
+let iceServers = {
     'iceServers': [
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:stun1.l.google.com:19302' },
@@ -38,7 +41,6 @@ var iceServers = {
 buttonGoToRoom.onclick = function(){
     if(inputRoomNumber.value==''){
         alert("Please enter a room number");
-
     }
     else{
         console.log('Hello');
@@ -56,7 +58,7 @@ socket.on('created', function(room){
     // Caller gets user media devices with defined constraints
 
     navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
-        localStream = stream; // Sets localStream to variable
+        localStream = stream; // Sets localStream to letiable
         localVideo.srcObject = stream; // Shows stream to the user
         isCaller = true; // Sets current user as caller
     }).catch(function(err){
@@ -71,7 +73,7 @@ socket.on("joined", function(room){
     // Caller gets user media devices
 
     navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
-        localStream = stream; // Sets localStram to variable
+        localStream = stream; // Sets localStram to letiable
         localVideo.srcObject = stream; // Shows stream to the user
         socket.emit('ready', roomNumber); // Sends message to the server
     }).catch(function(err){
@@ -82,6 +84,7 @@ socket.on("joined", function(room){
 // Whe server emits 'ready'
 
 socket.on('ready', function(){
+    
     if(isCaller){
 
         // Create an RTCPeerConnection object
@@ -106,6 +109,7 @@ socket.on('ready', function(){
 // When server emits offer
 
 socket.on('offer', function(event){
+    
     if(!isCaller){
 
         // Creates an RTCPeerConnection Object
@@ -119,7 +123,7 @@ socket.on('offer', function(event){
 
         // Adds current local stream to the object
 
-        rtcPeerConnection.addTrack(localStream);
+        rtcPeerConnection.addStream(localStream);
         
         // Stores the offer as remote description
         
@@ -127,7 +131,7 @@ socket.on('offer', function(event){
         
         // Prepares an answer
 
-        rtcPeerConnection.createAnswer(setLocalAndanswer, function(e){console.log(e)});
+        rtcPeerConnection.createAnswer(setLocalAndAnswer, function(e){console.log(e)});
     }
 });
 
@@ -146,13 +150,13 @@ socket.on('candidate', function(event){
          
     // Craetes a candidate object
 
-    var candidate = new RTCIceCandidate({
+    let candidate = new RTCIceCandidate({
         sdpMLineIndex: event.label,
         candidate: event.candidate
     });
 
     // Stores candidate
-
+//if(rtcPeerConnection)
     rtcPeerConnection.addIceCandidate(candidate);
 });
 
@@ -189,9 +193,10 @@ function setLocalAndOffer(sessionDescription){
         sdp: sessionDescription,
         room: roomNumber
     });
+    console.log('offer')
 }
 
-// // Stores answer and sends message to the server
+// Stores answer and sends message to the server
 
 function setLocalAndAnswer (sessionDescription){
     rtcPeerConnection.setLocalDescription(sessionDescription);
@@ -200,4 +205,5 @@ function setLocalAndAnswer (sessionDescription){
         sdp: sessionDescription,
         room: roomNumber
     });
+    console.log('answer')
 }

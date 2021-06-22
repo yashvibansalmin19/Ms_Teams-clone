@@ -2,10 +2,11 @@
 
 const express = require('express');
 const app = express();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+let http = require('http').createServer(app);
+let io = require('socket.io')(http);
 app.set('view engine','ejs') ;
-//static hoting using express.
+
+//static hosting using express.
 
 app.use(express.static('public')) ;
 
@@ -28,9 +29,11 @@ io.on('connection', function(socket){
 
     socket.on('create or join', function (room){
 
-        var myRoom = io.sockets.adapter.rooms[room];
-        var numClients = myRoom ? myRoom.length : 0;
-        //console.log(room, 'has', numClients, 'clients');
+        let myRoom = io.sockets.adapter.rooms.get(room);
+        console.log(myRoom);
+        let numClients = myRoom ? myRoom.size : 0;
+        
+        // console.log(room, 'has', numClients, 'clients');
         
         // These events are emitted only to the sender socket.
 
@@ -38,6 +41,7 @@ io.on('connection', function(socket){
           console.log('creating room', room);  
           socket.join(room);
           socket.emit('created', room);
+          
         }
         else if(numClients == 1){  // One user is already in the room
             console.log('joining room', room); 
@@ -48,6 +52,7 @@ io.on('connection', function(socket){
             console.log('cannot create a room', room); 
             socket.emit('full', room);
         }
+        console.log(room, 'has', numClients, 'clients');
     })
 
     // Relay only handlers
@@ -63,10 +68,10 @@ io.on('connection', function(socket){
     });
 
     socket.on('offer', function(event){
-        socket.broadcast.to(event.rooom).emit('offer', event.sdp);
+        socket.broadcast.to(event.room).emit('offer', event.sdp);
     });
 
     socket.on('answer', function(event){
-        socket.broadcast.to(even.room).emit('answer', event.sdp);
+        socket.broadcast.to(event.room).emit('answer', event.sdp);
     });
 });

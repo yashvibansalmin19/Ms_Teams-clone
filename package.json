@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yashvibansalmin19/Ms_Teams-clone.git"
+    "url": "https://github.com/yashvibansalmin19/Ms_Teams-clone.git"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "nodemon": "^2.0.7",
     "socket.io": "^4.1.2"
   }
 }
