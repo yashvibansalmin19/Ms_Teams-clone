@@ -1,35 +1,49 @@
-header {
-    padding: 50px;
-    text-align: center;
-    
-    color: white;
-    font-size: 50px;
-  }
 
-  html {
-    background: url(https://i.ytimg.com/vi/7dkrwPrmH-Y/maxresdefault.jpg) no-repeat center fixed;
-    background-size: cover;
-  }
 
-  label {
-    text-align: right;
-    color: white;
-    font-size: 30px;
-    vertical-align: middle;
-    margin:auto;
-    width:auto;
-  }
-   
-  button {
-    display: inline-block;
-    border-radius: 6px;
-    background-color: hsl(200, 31%, 38%);
-    border: none;
-    color: white;
-    text-align: center;
-    font-size: 15px;
-    padding: 10px;
-    width: 150px;
-    cursor: pointer;
-    margin: 0px;
-  }
+html {
+  background-color: rgba(34, 29, 29, 0.952);
+}
+
+button {
+  
+  display: inline-block;
+  border-radius: 6px;
+  background-color: hsl(202, 100%, 42%);
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: 150px;
+  cursor: pointer;
+}
+
+.video_tag{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+video{
+  height: 300px;
+  width: 400px;
+  object-fit: cover;
+  padding: 10px;
+}
+
+/* #mute-unmute{
+  visibility: hidden;
+} */
+
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x)/ -2);
+  margin-left: calc(var(--bs-gutter-x)/ -2);
+}
+

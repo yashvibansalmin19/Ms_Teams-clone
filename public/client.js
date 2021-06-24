@@ -6,6 +6,8 @@ let inputRoomNumber = document.getElementById("roomNumber");
 let buttonGoToRoom = document.getElementById("goToRoom");
 let localVideo = document.getElementById("localVideo");
 let remoteVideo = document.getElementById("remoteVideo");
+let buttonToLeave = document.getElementById("EndCall");
+let buttonToShare = document.querySelector("screenShare");
 
 // establshing global letiables
 
@@ -14,13 +16,14 @@ let localStream;
 let remoteStream;
 let rtcPeerConnection;
 let isCaller=false;
+let ScreenShare;
 
 // Connecting the socket.io server
 
 let socket = io();
 
 let streamConstraints = {
-    audio: false, 
+    audio: true, 
     video: true
 };
 
@@ -58,9 +61,10 @@ socket.on('created', function(room){
     // Caller gets user media devices with defined constraints
 
     navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
-        localStream = stream; // Sets localStream to letiable
+        localStream = stream; // Sets localStream to variable
         localVideo.srcObject = stream; // Shows stream to the user
         isCaller = true; // Sets current user as caller
+        console.log('created');
     }).catch(function(err){
         console.log("An error occured when accessing media devices.", err);
     });
@@ -73,9 +77,10 @@ socket.on("joined", function(room){
     // Caller gets user media devices
 
     navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
-        localStream = stream; // Sets localStram to letiable
+        localStream = stream; // Sets localStram to variable
         localVideo.srcObject = stream; // Shows stream to the user
         socket.emit('ready', roomNumber); // Sends message to the server
+        console.log('joined');
     }).catch(function(err){
         console.log("An error occured when accessing media devices.", err);
     });
@@ -119,7 +124,7 @@ socket.on('offer', function(event){
         // Adds event listeners to newly ceated object
 
         rtcPeerConnection.onicecandidate = onIceCandidate;
-        rtcPeerConnection.onaddStream = onAddStream;
+        rtcPeerConnection.onaddstream = onAddStream;
 
         // Adds current local stream to the object
 
@@ -141,7 +146,7 @@ socket.on('answer', function(event){
      
     // Stores it as remote description
 
-    rtcPeerConnection.setRemoteDescription(new RTCSessionDescription (event));
+    rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
 });
 
 // When server emits 'candidate'
@@ -156,10 +161,21 @@ socket.on('candidate', function(event){
     });
 
     // Stores candidate
-//if(rtcPeerConnection)
+
     rtcPeerConnection.addIceCandidate(candidate);
 });
 
+socket.on('full', function(event){
+    alert("Room full, Please enter another room number. ")
+})
+
+// buttonToLeave.onclick = function(){
+//    localStream = hangup;
+//    socket.emit('leaving', roomNumber);
+//    divSelectRoom.style = "display: none";
+//    divConsultingRoom.style = "display: none";
+//}
+// Functions that are refrences before as listeners for the peer connection
 // When a user receives the other user's video and audio stream
 
 function onAddStream(event){
@@ -167,7 +183,15 @@ function onAddStream(event){
     remoteStream = event.stream;
 }
 
-// Functions that are refrences before as listeners for the peer connection
+// function leave() {
+//     rtcPeerConnection.close();
+//     console.log("leaving");
+//     delete[rtcPeerConnection.candidate];
+//     delete [rtcPeerConnection.addIceCandidate];
+//     delete [rtcPeerConnection.addStream];
+//     localStream=null;
+//     remoteStream=null;
+// }
 
 // Sends a candidate message to the sever
 
@@ -207,3 +231,33 @@ function setLocalAndAnswer (sessionDescription){
     });
     console.log('answer')
 }
+
+
+function muteunmute (){
+    const Audio= localStream.getAudioTracks()[0].enabled ;
+    if(Audio){
+        console.log("audio off") ;
+        localStream.getAudioTracks()[0].enabled= false ;    
+    }
+    else{
+        console.log("audio on") ;
+        localStream.getAudioTracks()[0].enabled= true ;      
+    }
+}
+
+function on_off (){
+    const Video= localStream.getVideoTracks()[0].enabled ;
+    if(Video){
+        console.log("video off") ;
+        localStream.getVideoTracks()[0].enabled= false ;   
+    }
+    else{
+        console.log("video on") ;
+        localStream.getVideoTracks()[0].enabled= true ;    
+    }
+}
+
+// const start = () => {
+//     var x= document.getElementById('mute-unmute');
+//     x.style.visibility = "visible";
+// }

@@ -1,36 +1,106 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
-    <head> 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CONNECT</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
     
-    <body>
-        <header style="height: max-content;" >
-            <div id="selectRoom"></div>
-            
-                <label style="font-family: Arial, Helvetica, sans-serif;">ENTER CODE</label><br></br>
-                <input id="roomNumber" type="text" size="30px" placeholder = "#123" pattren="[#]{1}[0-9]{3}"/><br></br>
-                <button id="goToRoom" type="submit">START MEETING</button>
-            
-            </div>       
-        </header>
+    <html lang="en">
 
-        <div id="consultingRoom">
-            <video id="localVideo" autoplay></video>   
-            <video id="remoteVideo" autoplay></video>  
-        </div>    
+        <head>
+                
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+            <title>CONNECT</title>
+            <link rel="stylesheet" href="style.css">
+            <link rel="shortcut icon" href="video-conference.png">
+        </head>
+            
+        <body style="padding: 10px;margin: 10px;">
+                
+            <div class="row">
+                    
+                <div id="selectRoom" class="input-group"><span class="input-group-text">ENTER CODE</span>
+                <input id="roomNumber" type="text" class="form-control" placeholder="enter your room number" />
+                <button id="goToRoom"class="btn btn-primary" type="button">START MEETING</button></div><br></br>
+            
+            </div>
+                <!-- <div class="row">
+                    <div id="user-name" class="input-group"><span class="input-group-text">ENTER YOUR NAME</span>
+                    <input id="UserName" type="text" class="form-control" placeholder="enter your name" />
+                    <button id="name" class="btn btn-primary" type="button">ENTER NAME</button></div>
+                </div> -->
+            <div class="videotag">
+                    
+                <div id="consultingRoom" class="video-room">
+                    <video id="localVideo" autoplay></video> 
+                    <video id="remoteVideo" autoplay></video></div>
+                </div>
+            
+            </div>
+                
+            <div id="buttons" class="row">
+                
+                <div class="col-md-4"><button id="mute_unmute" type="button" onclick="muteunmute()">mute</button></div>
+                <div class="col-md-4"><button id="video_on/off" type="button" onclick="on_off()">off</button><div><br></br>
+                
+            </div>
+                    
+            <div><button id="pip" style="display: none" class="button">enter picture in picture</button></div>
+            
+    
   
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="client.js"></script>
+                <!-- <div class="row">
+                    <div class="col-md-4"><button id="mute-unmute" type="button" onclick="muteunmute()">mute/unmute</button></div>
+                    <div class="col-md-4"><button id="video_on/off" type="button" onclick="on_off()">on/off</button><div>
+                    <div class="col-md-4"><button id="leave" type="button" onclick="leave()">leave meeting</button></div>
+                </div> -->
+        <script>
+            
+            const videopip = document.querySelector("#videopip");
+            const button = document.querySelector("#button");
+        
+            if("pictureInPictureEnabled" in document) {
+                pip.style.display = null;
+
+                pip.addEventListener("click", () =>{
+                    if(document.pictureInPictureElement){
+                        document.exitPictureInPicture().catch(err =>{
+                            console.log(err);
+                        });
+                        return;
+                    }
+                    // mute_unmute.requestPictureInPicture().catch(err =>{
+                    //     console.log(error);
+                    // });
+                    remoteVideo.requestPictureInPicture().catch(err =>{
+                        console.log(err);
+                    });
+                });
+                
+                remoteVideo.addEventListener("enterpictureinpicture", e => {
+                    console.log(e);
+
+                    pip.textContent = "Leave Picture-in-Picture";
+                })
+                // mute_unmute.addEventListener("enterpictureinpicture", e => {
+                //     console.log(e);
+
+                //     pip.textContent = "Leave Picture-in-Picture";
+                // })
+
+                remoteVideo.addEventListener("leavepictureinpicture", e => {
+                    console.log(e);
+
+                    pip.textContent = "Enter Picture-in-Picture";
+                })
+                // mute_unmute.addEventListener("leavepictureinpicture", e => {
+                //     console.log(e);
+
+                //     pip.textContent = "Enter Picture-in-Picture";
+                // })
+
+            }
+        </script>
+
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="client.js"></script>
     
-    </body>
+        </body>
 
-</html>
-
-<html>
-
+    </html> 
