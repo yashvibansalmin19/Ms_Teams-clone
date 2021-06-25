@@ -6,13 +6,17 @@ let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 app.set('view engine','ejs') ;
 
+//routing the pages
+
+let routes = require('./routes/indexNew');
+let index = require('./routes/index')
+
+app.use('/', routes);
+app.use('/index', index)
+
 //static hosting using express.
 
 app.use(express.static('public')) ;
-
-app.get('/', (req,res)=>{
-    res.render('index') ;
-})
 
 //listener
 

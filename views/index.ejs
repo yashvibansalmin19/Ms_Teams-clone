@@ -1,47 +1,74 @@
 <!DOCTYPE html>
     
-    <html lang="en">
+<html lang="en">
 
-        <head>
-                
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-            <title>CONNECT</title>
-            <link rel="stylesheet" href="style.css">
-            <link rel="shortcut icon" href="video-conference.png">
-        </head>
+    <head>
             
-        <body style="padding: 10px;margin: 10px;">
+        <!-- <header>
                 
-            <div class="row">
-                    
-                <div id="selectRoom" class="input-group"><span class="input-group-text">ENTER CODE</span>
-                <input id="roomNumber" type="text" class="form-control" placeholder="enter your room number" />
-                <button id="goToRoom"class="btn btn-primary" type="button">START MEETING</button></div><br></br>
+            <h1 style= "color: white; font-family: Arial, Helvetica, sans-serif; padding: 10px; justify-content: left;">CONNECT</i></h1>
+            <p style= "color: white;justify-content: left; font-family: Arial, Helvetica, sans-serif; padding: 10px;"><span id="datetime"></span></p>
             
+        </header>    -->
+            
+        <meta charset="utf-8" />
+            
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+            
+        <title>CONNECT</title>
+        <link rel="shortcut icon" href="video-conference.png">
+        <link rel="stylesheet" href="style.css">   
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+    </head>
+            
+    <body style="padding: 10px;margin: 10px;">
+                
+<!--     
+        <div claa="row">         
+            
+            <div id="selectRoom" class="input-group">
+                
+                <span class="input-group-text" style="color: white; font-family: Arial, Helvetica, sans-serif; padding: 10px;">ENTER CODE</span><br></br>
+                <input id="roomNumber" type="text" class="form-control" style="padding: 4px;" placeholder="enter your room number" /><br></br>
+                
             </div>
+                
+            <div id="EnterName" class="input-group">
+                
+                <span class="input-group-text" style="color: white; font-family: Arial, Helvetica, sans-serif; padding: 10px;">ENTER YOUR NAME</span><br></br>
+                <input id="userName" type="text" class="form-control" style="padding: 4px;" placeholder="enter your name" /><br></br>
+            
+            </div>    
+            
+            <button id="goToRoom"class="btn btn-primary" type="button" style="padding: 8px; margin: 10px;">START MEETING</button></div><br></br>
+            
+        </div> -->
                 <!-- <div class="row">
                     <div id="user-name" class="input-group"><span class="input-group-text">ENTER YOUR NAME</span>
                     <input id="UserName" type="text" class="form-control" placeholder="enter your name" />
                     <button id="name" class="btn btn-primary" type="button">ENTER NAME</button></div>
                 </div> -->
-            <div class="videotag">
+        <div class="videotag">
                     
-                <div id="consultingRoom" class="video-room">
-                    <video id="localVideo" autoplay></video> 
-                    <video id="remoteVideo" autoplay></video></div>
-                </div>
+            <div id="consultingRoom" class="video-room">
+                
+                <video id="localVideo" autoplay></video> 
+                <video id="remoteVideo" autoplay></video></div>
             
             </div>
+            
+        </div>
                 
-            <div id="buttons" class="row">
+        <div id="buttons" class="row1">
                 
-                <div class="col-md-4"><button id="mute_unmute" type="button" onclick="muteunmute()">mute</button></div>
-                <div class="col-md-4"><button id="video_on/off" type="button" onclick="on_off()">off</button><div><br></br>
-                
-            </div>
-                    
-            <div><button id="pip" style="display: none" class="button">enter picture in picture</button></div>
+            <div class="col-md-4"><button id="mute_unmute" class="button1" title="mute/unmute" onclick="muteunmute()"><i class="fas fa-microphone"></i></button></div>
+            <div class="col-md-5"><button id="video_on/off" class="button1" title="on/off" onclick="on_off()"><i class="fas fa-video"></i></button><div><br></br>
+            <div class="col-md-6"><button id="pip" style="display: none" class="button1"><i class="fa fa-home"></i></button></div>
+            
+        </div>
+
             
     
   
@@ -50,6 +77,13 @@
                     <div class="col-md-4"><button id="video_on/off" type="button" onclick="on_off()">on/off</button><div>
                     <div class="col-md-4"><button id="leave" type="button" onclick="leave()">leave meeting</button></div>
                 </div> -->
+            
+        <!-- <script>
+            var dt = new Date();
+            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        </script> -->
+        
+        
         <script>
             
             const videopip = document.querySelector("#videopip");
@@ -94,13 +128,14 @@
 
                 //     pip.textContent = "Enter Picture-in-Picture";
                 // })
-
+               
             }
         </script>
 
-            <script src="/socket.io/socket.io.js"></script>
-            <script src="client.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        
+        <script src="client.js"></script>
     
-        </body>
+    </body>
 
-    </html> 
+</html> 

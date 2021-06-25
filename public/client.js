@@ -40,19 +40,21 @@ let iceServers = {
 }
 
 // Adding click event to the button
-
-buttonGoToRoom.onclick = function(){
-    if(inputRoomNumber.value==''){
-        alert("Please enter a room number");
+window.onload = function(){
+    
+    buttonGoToRoom.onclick = function(){
+        if(inputRoomNumber.value==''){
+           alert("Please enter a room number");
+        }
+        else{
+           console.log('Hello');
+           roomNumber = inputRoomNumber.value;  // Taking value from the element
+           socket.emit('create or join', roomNumber); //Sending message to the server
+           divSelectRoom.style = "display: none"; // Hide select room division
+           divConsultingRoom.style = "display: block"; // Show consultingRoom division 
+        }
     }
-    else{
-        console.log('Hello');
-        roomNumber = inputRoomNumber.value;  // Taking value from the element
-        socket.emit('create or join', roomNumber); //Sending message to the server
-        divSelectRoom.style = "display: none"; // Hide select room division
-        divConsultingRoom.style = "display: block"; // Show consultingRoom division 
-    }
-};
+}
 
 // When server emits 'created'
 
