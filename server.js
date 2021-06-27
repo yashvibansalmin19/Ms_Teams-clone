@@ -8,11 +8,11 @@ app.set('view engine','ejs') ;
 
 //routing the pages
 
-let routes = require('./routes/indexNew');
-let index = require('./routes/index')
+let index = require('./routes/index');
+//let index = require('./routes/index')
 
-app.use('/', routes);
-app.use('/index', index)
+app.use('/', index);
+//app.use('/index', index)
 
 //static hosting using express.
 

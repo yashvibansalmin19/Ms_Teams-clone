@@ -15,7 +15,7 @@ let roomNumber;
 let localStream;
 let remoteStream;
 let rtcPeerConnection;
-let isCaller=false;
+let isCaller = false;
 let ScreenShare;
 
 // Connecting the socket.io server
@@ -23,7 +23,7 @@ let ScreenShare;
 let socket = io();
 
 let streamConstraints = {
-    audio: true, 
+    audio: true,
     video: true
 };
 
@@ -40,63 +40,66 @@ let iceServers = {
 }
 
 // Adding click event to the button
-window.onload = function(){
-    
-    buttonGoToRoom.onclick = function(){
-        if(inputRoomNumber.value==''){
-           alert("Please enter a room number");
-        }
-        else{
-           console.log('Hello');
-           roomNumber = inputRoomNumber.value;  // Taking value from the element
-           socket.emit('create or join', roomNumber); //Sending message to the server
-           divSelectRoom.style = "display: none"; // Hide select room division
-           divConsultingRoom.style = "display: block"; // Show consultingRoom division 
-        }
+buttonGoToRoom.onclick = function () {
+
+    if (inputRoomNumber.value == '') {
+        alert("Please enter a room number");
+    }
+    else {
+        console.log('Hello');
+        roomNumber = inputRoomNumber.value;  // Taking value from the element
+        socket.emit('create or join', roomNumber); //Sending message to the server
+        //     divSelectRoom.style = "display: none"; // Hide select room division
+        //     divConsultingRoom.style = "display: block"; // Show consultingRoom division 
+        let loginPage = document.getElementById("login");
+        let VideoPage = document.getElementById("videoPage");
+        loginPage.classList.toggle("hidden");
+        VideoPage.classList.toggle("hidden");
     }
 }
 
+
 // When server emits 'created'
 
-socket.on('created', function(room){
+socket.on('created', function (room) {
 
     // Caller gets user media devices with defined constraints
 
-    navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
+    navigator.mediaDevices.getUserMedia(streamConstraints).then(function (stream) {
         localStream = stream; // Sets localStream to variable
         localVideo.srcObject = stream; // Shows stream to the user
         isCaller = true; // Sets current user as caller
         console.log('created');
-    }).catch(function(err){
+    }).catch(function (err) {
         console.log("An error occured when accessing media devices.", err);
     });
 });
 
 // When server emits 'joined'
 
-socket.on("joined", function(room){
+socket.on("joined", function (room) {
 
     // Caller gets user media devices
 
-    navigator.mediaDevices.getUserMedia(streamConstraints).then(function(stream){
+    navigator.mediaDevices.getUserMedia(streamConstraints).then(function (stream) {
         localStream = stream; // Sets localStram to variable
         localVideo.srcObject = stream; // Shows stream to the user
         socket.emit('ready', roomNumber); // Sends message to the server
         console.log('joined');
-    }).catch(function(err){
+    }).catch(function (err) {
         console.log("An error occured when accessing media devices.", err);
     });
 });
 
 // Whe server emits 'ready'
 
-socket.on('ready', function(){
-    
-    if(isCaller){
+socket.on('ready', function () {
+
+    if (isCaller) {
 
         // Create an RTCPeerConnection object
 
-        rtcPeerConnection= new RTCPeerConnection(iceServers);
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
 
         // Adds event listeners to newly created object
 
@@ -104,20 +107,20 @@ socket.on('ready', function(){
         rtcPeerConnection.onaddstream = onAddStream;
 
         // Adds current local stream to the object
-        
+
         rtcPeerConnection.addStream(localStream);
-        
+
         // Prepares an offer
 
-        rtcPeerConnection.createOffer(setLocalAndOffer, function(e){console.group(e)});
+        rtcPeerConnection.createOffer(setLocalAndOffer, function (e) { console.group(e) });
     }
 });
 
 // When server emits offer
 
-socket.on('offer', function(event){
-    
-    if(!isCaller){
+socket.on('offer', function (event) {
+
+    if (!isCaller) {
 
         // Creates an RTCPeerConnection Object
 
@@ -131,21 +134,21 @@ socket.on('offer', function(event){
         // Adds current local stream to the object
 
         rtcPeerConnection.addStream(localStream);
-        
+
         // Stores the offer as remote description
-        
+
         rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
-        
+
         // Prepares an answer
 
-        rtcPeerConnection.createAnswer(setLocalAndAnswer, function(e){console.log(e)});
+        rtcPeerConnection.createAnswer(setLocalAndAnswer, function (e) { console.log(e) });
     }
 });
 
 // When server emits 'answer'
 
-socket.on('answer', function(event){
-     
+socket.on('answer', function (event) {
+
     // Stores it as remote description
 
     rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event));
@@ -153,8 +156,8 @@ socket.on('answer', function(event){
 
 // When server emits 'candidate'
 
-socket.on('candidate', function(event){
-         
+socket.on('candidate', function (event) {
+
     // Craetes a candidate object
 
     let candidate = new RTCIceCandidate({
@@ -167,7 +170,7 @@ socket.on('candidate', function(event){
     rtcPeerConnection.addIceCandidate(candidate);
 });
 
-socket.on('full', function(event){
+socket.on('full', function (event) {
     alert("Room full, Please enter another room number. ")
 })
 
@@ -176,11 +179,12 @@ socket.on('full', function(event){
 //    socket.emit('leaving', roomNumber);
 //    divSelectRoom.style = "display: none";
 //    divConsultingRoom.style = "display: none";
-//}
+// }
+
 // Functions that are refrences before as listeners for the peer connection
 // When a user receives the other user's video and audio stream
 
-function onAddStream(event){
+function onAddStream(event) {
     remoteVideo.srcObject = event.stream;
     remoteStream = event.stream;
 }
@@ -197,8 +201,8 @@ function onAddStream(event){
 
 // Sends a candidate message to the sever
 
-function onIceCandidate(event){
-    if(event.candidate){
+function onIceCandidate(event) {
+    if (event.candidate) {
         console.log('sending ice candidate');
         socket.emit('candidate', {
             type: 'candidate',
@@ -212,9 +216,9 @@ function onIceCandidate(event){
 
 // Stores offer and sends messge to the server
 
-function setLocalAndOffer(sessionDescription){
+function setLocalAndOffer(sessionDescription) {
     rtcPeerConnection.setLocalDescription(sessionDescription);
-    socket.emit('offer',{
+    socket.emit('offer', {
         type: 'offer',
         sdp: sessionDescription,
         room: roomNumber
@@ -224,7 +228,7 @@ function setLocalAndOffer(sessionDescription){
 
 // Stores answer and sends message to the server
 
-function setLocalAndAnswer (sessionDescription){
+function setLocalAndAnswer(sessionDescription) {
     rtcPeerConnection.setLocalDescription(sessionDescription);
     socket.emit('answer', {
         type: 'answer',
@@ -235,27 +239,27 @@ function setLocalAndAnswer (sessionDescription){
 }
 
 
-function muteunmute (){
-    const Audio= localStream.getAudioTracks()[0].enabled ;
-    if(Audio){
-        console.log("audio off") ;
-        localStream.getAudioTracks()[0].enabled= false ;    
+function muteunmute() {
+    const Audio = localStream.getAudioTracks()[0].enabled;
+    if (Audio) {
+        console.log("audio off");
+        localStream.getAudioTracks()[0].enabled = false;
     }
-    else{
-        console.log("audio on") ;
-        localStream.getAudioTracks()[0].enabled= true ;      
+    else {
+        console.log("audio on");
+        localStream.getAudioTracks()[0].enabled = true;
     }
 }
 
-function on_off (){
-    const Video= localStream.getVideoTracks()[0].enabled ;
-    if(Video){
-        console.log("video off") ;
-        localStream.getVideoTracks()[0].enabled= false ;   
+function on_off() {
+    const Video = localStream.getVideoTracks()[0].enabled;
+    if (Video) {
+        console.log("video off");
+        localStream.getVideoTracks()[0].enabled = false;
     }
-    else{
-        console.log("video on") ;
-        localStream.getVideoTracks()[0].enabled= true ;    
+    else {
+        console.log("video on");
+        localStream.getVideoTracks()[0].enabled = true;
     }
 }
 

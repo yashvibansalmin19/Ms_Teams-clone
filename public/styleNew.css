@@ -17,19 +17,19 @@ body {
     margin-bottom: 0;
 }
   
-@media (min-width:800px) {
+@media (min-width:500px) {
     .navigation-clean {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
     }
 }
   
 .navigation-clean .navbar-brand {
-    font-weight: 400;
-    color: inherit;
+    font-weight: 300;
+    color: white;
 }
   
-.navigation-clean.navbar-light .navbar-nav .nav-link.active, .navigation-clean.navbar-light .navbar-nav .nav-link.active:focus, .navigation-clean.navbar-light .navbar-nav .nav-link.active:hover {
+/* .navigation-clean.navbar-light .navbar-nav .nav-link.active, .navigation-clean.navbar-light .navbar-nav .nav-link.active:focus, .navigation-clean.navbar-light .navbar-nav .nav-link.active:hover {
     color: #8f8f8f;
     box-shadow: none;
     background: none;
@@ -40,11 +40,11 @@ body {
     padding-left: 0px;
     padding-right: 0px;
 }
-  
-.navigation-clean.navbar-light .navbar-nav .nav-link:focus, .navigation-clean.navbar-light .navbar-nav .nav-link:hover {
+   */
+/* .navigation-clean.navbar-light .navbar-nav .nav-link:focus, .navigation-clean.navbar-light .navbar-nav .nav-link:hover {
     color: #37434d !important;
     background-color: #f1f7fc;
-}
+} */
 
 .register-photo {
     background: #f1f7fc;
@@ -52,8 +52,8 @@ body {
 }
   
 .register-photo .image-holder {
-    display: table-cell;
-    width: auto;
+    display:grid;
+    width: 100%;
     background: url(meeting.jpg);
     background-size: cover;
 }
@@ -83,7 +83,7 @@ body {
 .register-photo form h2 {
     font-size: 24px;
     line-height: 1.5;
-    margin-bottom: 30px;
+    margin-bottom: 0;
 }
   
 .register-photo form .form-control {
