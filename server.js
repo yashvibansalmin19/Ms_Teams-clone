@@ -2,81 +2,44 @@
 
 const express = require('express');
 const app = express();
-let http = require('http').createServer(app);
-let io = require('socket.io')(http);
-app.set('view engine','ejs') ;
-
-//routing the pages
-
-let index = require('./routes/index');
-//let index = require('./routes/index')
-
-app.use('/', index);
-//app.use('/index', index)
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const { v4: uuidV4 } = require('uuid');
+const { ExpressPeerServer } = require('peer');    // webrtc framework for video calling
+const peerserver = ExpressPeerServer(server, {
+    debug: true
+});
 
 //static hosting using express.
 
-app.use(express.static('public')) ;
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use('/peerjs', peerserver);
+
+app.get('/', (req, res) => {
+    res.redirect(`/${uuidV4()}`)
+})
+
+app.get('/:index', (req, res) => {
+    res.render('index', { roomId: req.params.index })
+})
+
 
 //listener
 
-http.listen(5500, function(){
-    console.log('server running on http://localhost:5500') ;
+server.listen(5500, function () {
+    console.log('server running on http://localhost:5500');
 });
 
 // Signalling handlers
 
-io.on('connection', function(socket){
-    console.log('a user is connected');
+io.on('connection', socket => {
+    socket.on('join-room', (roomId, userId) => {
+        socket.join(roomId)
+        socket.broadcast.to(roomId).emit('user-connected', userId)
 
-    // When clients emits create or join
-
-    socket.on('create or join', function (room){
-
-        let myRoom = io.sockets.adapter.rooms.get(room);
-        console.log(myRoom);
-        let numClients = myRoom ? myRoom.size : 0;
-        
-        // console.log(room, 'has', numClients, 'clients');
-        
-        // These events are emitted only to the sender socket.
-
-        if(numClients == 0){ // No users in the room
-          console.log('creating room', room);  
-          socket.join(room);
-          socket.emit('created', room);
-          
-        }
-        else if(numClients == 1){  // One user is already in the room
-            console.log('joining room', room); 
-            socket.join(room);
-            socket.emit('joined', room);
-        }
-        else{  // Two participants are already in the room
-            console.log('cannot create a room', room); 
-            socket.emit('full', room);
-        }
-        console.log(room, 'has', numClients, 'clients');
+        socket.on('disconnect', () => {
+            socket.broadcast.to(roomId).emit('user-disconnected', userId)
+        })
     })
-
-    // Relay only handlers
-
-    // These events are emitted to all the sockets connected to the same room except the sender.
-    
-    socket.on('ready', function (room){
-        socket.broadcast.to(room).emit('ready');
-    });
-
-    socket.on('candidate', function(event){
-        socket.broadcast.to(event.room).emit('candidate', event);
-    });
-
-    socket.on('offer', function(event){
-        socket.broadcast.to(event.room).emit('offer', event.sdp);
-    });
-
-    socket.on('answer', function(event){
-        socket.broadcast.to(event.room).emit('answer', event.sdp);
-    });
-});
-
+})

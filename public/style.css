@@ -48,20 +48,20 @@
 .btn-secondary:hover{
   background-color: rgb(6, 86, 139);
 }
-.video_tag{
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-
+#video-grid{
+  display: grid;
+  align-content: space-around;
+  justify-content: space-between;
+  padding: 10px;
+  grid-template-columns: repeat(auto-fill, 300px);
+  grid-auto-rows: 300px;
 }
 
 video{
-  height: 300px;
-  width: 400px;
-  object-fit: cover;
-  padding: 10px;
+  height: 100%;
+  width: 100%;
+  object-fit:contain ;
 }
 
 /* #mute-unmute{
@@ -74,11 +74,11 @@ video{
   margin:0;
   justify-content: center;
   padding: 20px;
-  background-color: #222427;
+  background-color: black;
   width: 97%;
   height: 40px;
   position: absolute;
-  bottom: 0;
+  bottom: 15px;
   margin: 0%;
 }
 
@@ -145,7 +145,7 @@ video{
     display: table-cell;
     width: 400px;
     background-color: #ffffff;
-    padding: 40px 60px;
+    padding: 75px;
     color: #505e6c;
 }
   
