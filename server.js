@@ -17,13 +17,16 @@ app.use(express.static('public'));
 app.use('/peerjs', peerserver);
 
 app.get('/', (req, res) => {
+    res.render('index')
+})
+
+app.get('/newMeeting/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
 })
 
-app.get('/:index', (req, res) => {
-    res.render('index', { roomId: req.params.index })
+app.get('/:meetingId', (req, res) => {
+    res.render('newMeeting', { roomId: req.params.meetingId })
 })
-
 
 //listener
 

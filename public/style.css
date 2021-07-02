@@ -8,10 +8,13 @@
 #login{
   height: 100vh;
 }
+body{
+  margin: 0;
+}
 
 .button1{
   display: flex;
-  background-color: hsl(202, 100%, 42%);
+  background-color: #0088D6;
   border-radius: 50%;
   border: none;
   color: white;
@@ -26,12 +29,12 @@
 } 
 
 .button1:hover{
-  background-color: rgb(6, 86, 139);
+  background-color: #06568B;
 }
 
 .btn-secondary{
   display: flex;
-  background-color: hsl(202, 100%, 42%);
+  background-color: #0088D6;
   border-radius: 50%;
   border: none;
   color: white;
@@ -46,27 +49,23 @@
 }
 
 .btn-secondary:hover{
-  background-color: rgb(6, 86, 139);
+  background-color: #06568B;
 }
 
 #video-grid{
   display: grid;
-  align-content: space-around;
-  justify-content: space-between;
-  padding: 10px;
   grid-template-columns: repeat(auto-fill, 300px);
   grid-auto-rows: 300px;
+  gap: 4px;
+  justify-items: center;
+  align-items: center;
 }
 
 video{
   height: 100%;
   width: 100%;
-  object-fit:contain ;
+  object-fit:contain;
 }
-
-/* #mute-unmute{
-  visibility: hidden;
-} */
 
 .row {
   display: flex;
@@ -77,12 +76,10 @@ video{
   background-color: black;
   width: 97%;
   height: 40px;
-  position: absolute;
+  position:absolute;
   bottom: 15px;
   margin: 0%;
 }
-
-
 
 .navigation-clean {
     background: #fff;

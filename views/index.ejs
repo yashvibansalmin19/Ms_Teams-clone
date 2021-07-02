@@ -4,20 +4,11 @@
 
 <head>
 
-    <!-- <header>
-                
-            <h1 style= "color: white; font-family: Arial, Helvetica, sans-serif; padding: 10px; justify-content: left;">CONNECT</i></h1>
-            <p style= "color: white;justify-content: left; font-family: Arial, Helvetica, sans-serif; padding: 10px;"><span id="datetime"></span></p>
-            
-        </header>    -->
-
     <meta charset="utf-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <script> const ROOM_ID = "<%= roomId %>"</script>
-    <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script defer src="client.js"></script>
+
+
 
     <title>CONNECT</title>
     <link rel="shortcut icon" href="video-conference.png">
@@ -39,11 +30,10 @@
                         class="d-inline-block" style="background: var(--bs-white); padding: 10px; float: left;"></img>
                     CONNECT
                 </a>
-
             </div>
         </nav>
 
-        <section class="register-photo" style="background: var(--bs-blue);margin: 0;color: hsl(202, 100%, 42%);">
+        <section class="register-photo" style="background: var(--bs-blue);margin: 0;color: #0088D6;">
             <div class="form-container">
                 <div class="image-holder" style="background: url('3697251.jpg') center / contain no-repeat;"></div>
                 <form method="post">
@@ -51,96 +41,14 @@
                     <div class="mb-3" id="EnterName"><input type="text" class="form-control" id="userName" size="50px"
                             placeholder="Enter your name" /></div><br></br>
 
-                    <div class="mb-3"><button id="goToRoom" class="btn btn-primary d-block w-150" type="button"
-                            title="start meeting" style="background-color:#eb3b60; color:white">Start
-                            Meeting</button>
+                    <div class="mb-3"><a href="/newMeeting/"><button class="btn btn-primary d-block w-150" type="button"
+                                title="start meeting" style="background-color:#eb3b60; color:#ffffff">Start
+                                Meeting</button></a>
                 </form>
             </div>
         </section>
 
     </div>
-
-    <div id="videoPage" class="container hidden" style="background-color: black;">
-
-        <div id="video-grid"></div>
-        <div class="container-fluid">
-            <div id="buttons" class="row">
-                <div class="col-md-3">
-                    <button id="mute_unmute" class="button1" title="mute/unmute" onclick="muteunmute()"><i
-                            class="fas fa-microphone"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <button id="video_on_off" class="button1" title="on/off" onclick="on_off()"><i class="fas fa-video"
-                            style="vertical-align: middle;"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <button id="pip" class="button1"><i class="fa fa-home"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <button id="leave" style="color: red;" class="button1"><i class="fas fa-phone-slash" title="leave"
-                            onclick="leaveMeeting"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-
-        const videopip = document.querySelector("#videopip");
-        const button = document.querySelector("#button");
-
-        if ("pictureInPictureEnabled" in document) {
-            pip.style.display = null;
-
-            pip.addEventListener("click", () => {
-                if (document.pictureInPictureElement) {
-                    document.exitPictureInPicture().catch(err => {
-                        console.log(err);
-                    });
-                    return;
-                }
-                // mute_unmute.requestPictureInPicture().catch(err =>{
-                //     console.log(error);
-                // });
-                remoteVideo.requestPictureInPicture().catch(err => {
-                    console.log(err);
-                });
-            });
-
-            // remoteVideo.addEventListener("enterpictureinpicture", e => {
-            //     console.log(e);
-
-            //     pip.textContent = "Leave Picture-in-Picture";
-            // })
-            // // mute_unmute.addEventListener("enterpictureinpicture", e => {
-            // //     console.log(e);
-
-            // //     pip.textContent = "Leave Picture-in-Picture";
-            // // })
-
-            // remoteVideo.addEventListener("leavepictureinpicture", e => {
-            //     console.log(e);
-
-            //     pip.textContent = "Enter Picture-in-Picture";
-            // })
-            // mute_unmute.addEventListener("leavepictureinpicture", e => {
-            //     console.log(e);
-
-            //     pip.textContent = "Enter Picture-in-Picture";
-            // })
-
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
 
 </body>
 

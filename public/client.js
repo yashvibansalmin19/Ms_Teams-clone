@@ -6,21 +6,6 @@ var myPeer = new Peer(undefined, {
     port: '5500'
 })
 
-buttonGoToRoom = document.getElementById('goToRoom');
-
-// Adding click event to the button
-
-buttonGoToRoom.onclick = function () {
-
-    console.log('Hello');
-    socket.emit('join-room'); //Sending message to the server
-
-    let loginPage = document.getElementById("login");
-    let VideoPage = document.getElementById("videoPage");
-    loginPage.classList.toggle("hidden");
-    VideoPage.classList.toggle("hidden");
-}
-
 const peers = {}
 
 navigator.mediaDevices.getUserMedia({  //apna video 
@@ -31,7 +16,7 @@ navigator.mediaDevices.getUserMedia({  //apna video
     MyVideo.muted = true
     localVideo = stream;
     addVideoStream(MyVideo, stream)
-
+    prompt('Copy meeting URL:', window.location);
     socket.on('user-connected', userId => {
         connectToNewUser(userId, stream)
     })
@@ -85,12 +70,16 @@ function muteunmute() {
     if (Audio) {
         console.log("audio off");
         localVideo.getAudioTracks()[0].enabled = false;
-        property.style.color = "#FF0000";
+        document.getElementById("mute_unmute").style.background = '#FF0000';
+
+        document.getElementById("mute_unmute").title = 'unmute';
     }
     else {
         console.log("audio on");
         localVideo.getAudioTracks()[0].enabled = true;
-        property.style.color = "#FFFFFF";
+        document.getElementById("mute_unmute").style.background = '#0088D6';
+
+        document.getElementById("mute_unmute").title = 'mute';
     }
 }
 
@@ -99,11 +88,14 @@ function on_off() {
     if (Video) {
         console.log("video off");
         localVideo.getVideoTracks()[0].enabled = false;
-        property.style.color = "#FF0000";
+        document.getElementById("video_on_off").style.background = '#FF0000';
+        document.getElementById("video_on_off").title = 'video off';
     }
     else {
         console.log("video on");
         localVideo.getVideoTracks()[0].enabled = true;
-        property.style.color = "#FFFFFF";
+        document.getElementById("video_on_off").style.background = '#0088D6';
+        document.getElementById("video_on_off").title = 'video on';
     }
 }
+
