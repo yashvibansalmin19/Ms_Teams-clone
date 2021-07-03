@@ -64,7 +64,7 @@ myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
 })
 
-//defining the funtions
+// Defining the funtions
 
 function scrollToBottom() {
     var d = $('.main__chat_window');
@@ -92,6 +92,8 @@ function addVideoStream(video, stream) {
     videoGrid.append(video)
 }
 
+// To mute or unmute yourself
+
 function muteunmute() {
     const Audio = localVideo.getAudioTracks()[0].enabled;
     if (Audio) {
@@ -110,6 +112,8 @@ function muteunmute() {
     }
 }
 
+// To show or hide your video
+
 function on_off() {
     const Video = localVideo.getVideoTracks()[0].enabled;
     if (Video) {
@@ -126,3 +130,14 @@ function on_off() {
     }
 }
 
+// Share your screen
+
+function shareScreen() {
+    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
+        const screenTrack = stream.getTracks()[0];
+        senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
+        screenTrack.onended = function () {
+            senders.current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
+        }
+    })
+}
