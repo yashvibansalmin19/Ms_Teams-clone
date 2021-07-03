@@ -28,32 +28,48 @@
 </head>
 
 <body>
+    <div class='main'>
 
-    <div id="videoPage" class="container-container-fluid" style="background-color: #000000;">
+        <div class='left_side'>
+            <div id="videoPage" class="container" style="background-color: #000000;">
 
-        <div id="video-grid"></div>
-
-        <div class="container-fluid">
-            <div id="buttons" class="row">
-                <div class="col-md-3">
-                    <button id="mute_unmute" class="button1" onclick="muteunmute()"><i
-                            class="fas fa-microphone"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <button id="video_on_off" class="button1" title="on/off" onclick="on_off()"><i class="fas fa-video"
-                            style="vertical-align: middle;"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <button id="pip" class="button1"><i class="fa fa-home"></i></button>
-                </div>
-                <div class="col-md-3">
-                    <a href="/"> <button id="leave" style="color: red;" class="button1"><i class="fas fa-phone-slash"
-                                title="leave"></i></button></a>
+                <div id="video-grid"></div>
+            </div>
+            <div class="container">
+                <div id="buttons" class="row">
+                    <div class="col-md-3">
+                        <button id="mute_unmute" class="button1" onclick="muteunmute()"><i
+                                class="fas fa-microphone"></i></button>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="video_on_off" class="button1" title="on/off" onclick="on_off()"><i
+                                class="fas fa-video" style="vertical-align: middle;"></i></button>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="pip" class="button1"><i class="fa fa-home"></i></button>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/"> <button id="leave" style="color: red;" class="button1"><i
+                                    class="fas fa-phone-slash" title="leave"></i></button></a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+
+        <div class="right_side">
+            <div class="header" style="background-color: #0088D6; height: 10px;">
+                <h4 style="font-family:Arial, Helvetica, sans-serif;">Chat</h4>
+            </div>
+            <br></br>
+            <div class="chat_window">
+                <ul class="messages"></ul>
+            </div>
+            <div class="message_container">
+                <input id="chat_message" type="text" placeholder="Type message here..." style="width: 250px;">
+            </div>
+        </div>
+    </div>
 
     <script>
 

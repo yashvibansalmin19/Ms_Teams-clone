@@ -1,13 +1,7 @@
-.hidden {
-  display: none;
-
-}
 #videoPage{
   height: 100vh;
 }
-#login{
-  height: 100vh;
-}
+
 body{
   margin: 0;
 }
@@ -32,33 +26,16 @@ body{
   background-color: #06568B;
 }
 
-.btn-secondary{
-  display: flex;
-  background-color: #0088D6;
-  border-radius: 50%;
-  border: none;
-  color: white;
-  vertical-align: middle;
-  padding: 15px; 
-  font-size: 16px;
-  width: 44px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.btn-secondary:hover{
-  background-color: #06568B;
-}
-
 #video-grid{
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
   grid-auto-rows: 300px;
   gap: 4px;
+  justify-content: center;
+  align-content: center;
   justify-items: center;
-  align-items: center;
+  align-items: center;  
+  padding: 10px;
 }
 
 video{
@@ -69,138 +46,66 @@ video{
 
 .row {
   display: flex;
-  flex-wrap: wrap;
-  margin:0;
   justify-content: center;
+  align-content: center;
   padding: 20px;
-  background-color: black;
-  width: 97%;
-  height: 40px;
-  position:absolute;
-  bottom: 15px;
-  margin: 0%;
+  background-color: #242324;;
+  height: 30px;
+  justify-items: center;
+  align-items: center;
+  align-self: baseline;
 }
 
-.navigation-clean {
-    background: #fff;
-    
-} 
-  
-@media (min-width:992px) {
-    .navigation-clean {
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-    }
+.main {
+  height: 100vh;
+  display: flex;
 }
-  
-.navigation-clean .navbar-brand {
-    font-weight: 400;
-    color: rgb(35, 38, 39);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 50px;
-    align-content: justify;
-}
-   
-.navigation-clean.navbar-light .navbar-nav .nav-link.active, .navigation-clean.navbar-light .navbar-nav .nav-link.active:focus, .navigation-clean.navbar-light .navbar-nav .nav-link.active:hover {
-    color: #8f8f8f;
-    box-shadow: none;
-    background: none;
-    pointer-events: none;
-}
-  
-.navigation-clean.navbar .navbar-nav .nav-link {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-  
-.navigation-clean.navbar-light .navbar-nav .nav-link:focus, .navigation-clean.navbar-light .navbar-nav .nav-link:hover {
-    color: #37434d !important;
-    background-color: #f1f7fc;
-} 
 
-.register-photo {
-    background: #f1f7fc;
-    padding: 80px ;
+.left_side {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
 }
-  
-.register-photo .image-holder {
-    display: table-cell;
-    width: 100%;
-    background: url(meeting.jpg);
-    background-size: cover;
+
+.right_side {
+  flex: 0.2
 }
-  
-.register-photo .form-container {
-    display: table;
-    max-width: 900px;
-    width: 100%;
-    margin: auto;
-    /* box-shadow: 1px 1px 5px rgba(0,0,0,0.1); */
+
+.right_side {
+  background-color: #242324;
+  border-left: 1px solid #3D3D42;
 }
-  
-.register-photo form {
-    display: table-cell;
-    width: 400px;
-    background-color: #ffffff;
-    padding: 75px;
-    color: #505e6c;
+
+.right_side {
+  display: flex;
+  flex-direction: column;
 }
-  
-@media (max-width:1000px) {
-    .register-photo form {
-      padding: 40px;
-    }
+
+.header {
+  padding-top: 5px;
+  color: #F5F5F5;
+  text-align: center;
 }
-  
-.register-photo form h2 {
-    font-size: 24px;
-    line-height: 1.5;
-    margin-bottom: 30px;
+
+.chat_window {
+  flex-grow: 1;
+  overflow-y: auto;
 }
-  
-.register-photo form .form-control {
-    background: #f7f9fc;
-    border: none;
-    border-bottom: 1px solid #dfe7f1;
-    border-radius: 0;
-    box-shadow: none;
-    outline: none;
-    color: inherit;
-    text-indent: 6px;
-    height: 40px;
+
+.messages{
+  color: white;
+  list-style: none;
 }
-  
-.register-photo form .form-check {
-    font-size: 13px;
-    line-height: 20px;
+
+.message_container {
+  padding: 12px 12px;
+  display: flex;
 }
-  
-.register-photo form .btn-primary {
-    background: #f4476b;
-    border: none;
-    border-radius: 4px;
-    padding: 11px;
-    margin-top: 35px;
-    text-shadow: none;
-    outline: none !important;
-    cursor: pointer;
-    size: 30px;
-}
-  
-.register-photo form .btn-primary:hover, .register-photo form .btn-primary:active {
-    background: #eb3b60;
-    background-color: #e20934;
-}
-  
-.register-photo form .btn-primary:active {
-    transform: translateY(1px);
-}
-  
-.register-photo form .already {
-    display: block;
-    text-align: center;
-    font-size: 12px;
-    color: #6f7a85;
-    opacity: 0.9;
-    text-decoration: none;
+
+.message_container input {
+  flex-grow: 1.5px;
+  background-color: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+  border: none;
+  color: #F5F5F5;
 }
