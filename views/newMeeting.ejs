@@ -4,25 +4,19 @@
 
 <head>
 
-    <!-- <header>
-                
-            <h1 style= "color: white; font-family: Arial, Helvetica, sans-serif; padding: 10px; justify-content: left;">CONNECT</i></h1>
-            <p style= "color: white;justify-content: left; font-family: Arial, Helvetica, sans-serif; padding: 10px;"><span id="datetime"></span></p>
-            
-        </header>    -->
-
     <meta charset="utf-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
     <script> const ROOM_ID = "<%= roomId %>"</script>
     <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-a11y="true"></script>
+    <script defer src="/socket.io/socket.io.js"></script>
     <script defer src="client.js"></script>
 
     <title>CONNECT</title>
+
     <link rel="shortcut icon" href="video-conference.png">
     <link rel="stylesheet" href="style.css">
-    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-a11y="true"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
@@ -34,15 +28,16 @@
             <div id="videoPage" class="container" style="background-color: #000000;">
 
                 <div id="video-grid"></div>
+
             </div>
             <div class="container">
                 <div id="buttons" class="row">
                     <div class="col-md-3">
-                        <button id="mute_unmute" class="button1" onclick="muteunmute()"><i
+                        <button id="mute_unmute" class="button1 muteUnmute" onclick="muteunmute()"><i
                                 class="fas fa-microphone"></i></button>
                     </div>
                     <div class="col-md-3">
-                        <button id="video_on_off" class="button1" title="on/off" onclick="on_off()"><i
+                        <button id="video_on_off" class="button1 videoOnOff" title="video off" onclick="on_off()"><i
                                 class="fas fa-video" style="vertical-align: middle;"></i></button>
                     </div>
                     <div class="col-md-3">
@@ -51,8 +46,8 @@
                         </button>
                     </div>
                     <div class="col-md-3">
-                        <a href="/"> <button id="leave" style="color: red;" class="button1"><i
-                                    class="fas fa-phone-slash" title="leave"></i></button></a>
+                        <a href="/"> <button id="leave" style="color: white; background-color: red;" class="button1"><i
+                                    class="fas fa-phone" title="leave meeting"></i></button></a>
                     </div>
                 </div>
             </div>
@@ -73,36 +68,40 @@
         </div>
     </div>
 
+    //
     <script>
 
-        const videopip = document.querySelector("#videopip");
-        const button = document.querySelector("#button");
+    //     const videopip = document.querySelector("#videopip");
+    //     const button = document.querySelector("#button");
 
-        if ("pictureInPictureEnabled" in document) {
-            pip.style.display = null;
+    //     if ("pictureInPictureEnabled" in document) {
+    //         pip.style.display = null;
 
-            pip.addEventListener("click", () => {
-                if (document.pictureInPictureElement) {
-                    document.exitPictureInPicture().catch(err => {
-                        console.log(err);
-                    });
-                    return;
-                }
-                remoteVideo.requestPictureInPicture().catch(err => {
-                    console.log(err);
-                });
-            });
-        }
-    </script>
+    //         pip.addEventListener("click", () => {
+    //             if (document.pictureInPictureElement) {
+    //                 document.exitPictureInPicture().catch(err => {
+    //                     console.log(err);
+    //                 });
+    //                 return;
+    //             }
+    //             remoteVideo.requestPictureInPicture().catch(err => {
+    //                 console.log(err);
+    //             });
+    //         });
+    //     }
+    // </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    //
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" //
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" //
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    //
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" //
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" //
         crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    //
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" //
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" //
         crossorigin="anonymous"></script>
 
 </body>

@@ -3,13 +3,16 @@ const videoGrid = document.getElementById('video-grid')
 let myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '5500'
 })
 
 // let userName;
 // document.getElementById('Name').innerHTML = window.location.search = userName;
 
-const peers = {}
+const peers = {};
+const senders = ([]);
+let localVideo;
+let remoteVideo;
 
 navigator.mediaDevices.getUserMedia({  //apna video 
     video: true,
@@ -67,7 +70,7 @@ myPeer.on('open', id => {
 // Defining the funtions
 
 function scrollToBottom() {
-    var d = $('.main__chat_window');
+    let d = $('.main__chat_window');
     d.scrollTop(d.prop("scrollHeight"));
 }
 
@@ -99,15 +102,15 @@ function muteunmute() {
     if (Audio) {
         console.log("audio off");
         localVideo.getAudioTracks()[0].enabled = false;
+        setUnmuteButton();
         document.getElementById("mute_unmute").style.background = '#FF0000';
-
         document.getElementById("mute_unmute").title = 'unmute';
     }
     else {
         console.log("audio on");
         localVideo.getAudioTracks()[0].enabled = true;
+        setMuteButton();
         document.getElementById("mute_unmute").style.background = '#0088D6';
-
         document.getElementById("mute_unmute").title = 'mute';
     }
 }
@@ -119,25 +122,70 @@ function on_off() {
     if (Video) {
         console.log("video off");
         localVideo.getVideoTracks()[0].enabled = false;
+        setPlayVideo();
         document.getElementById("video_on_off").style.background = '#FF0000';
-        document.getElementById("video_on_off").title = 'video off';
+        document.getElementById("video_on_off").title = 'video on';
     }
     else {
         console.log("video on");
         localVideo.getVideoTracks()[0].enabled = true;
+        setStopVideo();
         document.getElementById("video_on_off").style.background = '#0088D6';
-        document.getElementById("video_on_off").title = 'video on';
+        document.getElementById("video_on_off").title = 'video off';
     }
 }
 
 // Share your screen
+
 
 function shareScreen() {
     navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
         const screenTrack = stream.getTracks()[0];
         senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
         screenTrack.onended = function () {
-            senders.current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
+            senders.current.find(sender => sender.track.kind === "video").replaceTrack(localVideo.current.getTracks()[1]);
         }
+    }).catch((err) => {
+        console.log(err)
     })
+}
+
+// Stop Screen Share
+
+// function stopScreenShare() {
+//     let videotrack = localVideo.getVideoTracks()[0];
+//     var sender = currentPeer.getSenders().find(function (s) {
+//         return s.track.kind == videotrack;
+//     })
+//     sender.replaceTrack(videotrack)
+// }
+
+//Chnaging icon
+
+function setMuteButton() {
+    const html = `
+      <i class="fas fa-microphone"></i>
+    `
+    document.querySelector('.muteUnmute').innerHTML = html;
+}
+
+function setUnmuteButton() {
+    const html = `
+      <i class="fas fa-microphone-slash"></i>
+    `
+    document.querySelector('.muteUnmute').innerHTML = html;
+}
+
+function setStopVideo() {
+    const html = `
+      <i class="fas fa-video"></i>
+    `
+    document.querySelector('.videoOnOff').innerHTML = html;
+}
+
+function setPlayVideo() {
+    const html = `
+    <i class="stop fas fa-video-slash"></i>
+    `
+    document.querySelector('.videoOnOff').innerHTML = html;
 }

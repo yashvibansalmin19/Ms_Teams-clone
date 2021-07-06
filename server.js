@@ -30,7 +30,7 @@ app.get('/:meetingId', (req, res) => {
 
 //listener
 //process.env.PORT
-server.listen(process.env.PORT, function () {
+server.listen(5500, function () {
     console.log('server running on http://localhost:5500');
 });
 
