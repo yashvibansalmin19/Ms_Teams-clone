@@ -17,6 +17,26 @@ const peerserver = ExpressPeerServer(server, {
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const cookieSession = require('cookie-session')
+
+require('./google_oauth');
+
+app.use(cors())
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+// For an actual app you should configure this with an experation time, better keys, proxy and secure
+app.use(cookieSession({
+    name: 'tuto-session',
+    keys: ['key1', 'key2']
+}))
+
 // const session = require('express-session')
 const methodOverride = require('method-override')
 
@@ -66,7 +86,7 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-app.get('/auth/google/redirect', passport.authenticate('google', { session: false, failureRedirect: `https://localhost:5500/login` }), (req, res) => {
+app.get('/auth/google/redirect', passport.authenticate('google', { session: false, failureRedirect: `https://connect-video-chat.herokuapp.com/auth/google/redirect` }), (req, res) => {
     res.redirect(req.user); //req.user has the redirection_url
 });
 
@@ -160,6 +180,6 @@ io.on('connection', socket => {
 
 //listener
 //process.env.PORT
-server.listen(5500, function () {
-    console.log('server running on http://localhost:5500');
+server.listen(process.env.PORT, function () {
+    console.log('server running on', "https://connect-video-chat.herokuapp.com");
 });
