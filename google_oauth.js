@@ -6,6 +6,15 @@ passport.use(new GoogleStrategy({
     clientID: 5610789853 - cgup6npmfrebr5sl8kfs63h6ovd83ti9.apps.googleusercontent.com, //replace with copied value from Google console
     clientSecret: KTIOE8AxeiWc9zbuO3gTLb3D,
 },
+    passport.serializeUser(function (user, done) {
+        done(null, user.id);
+    }),
+
+    passport.deserializeUser(function (id, done) {
+        User.findById(id, function (err, user) {
+            done(err, user);
+        });
+    }),
     async (accessToken, refreshToken, profile, done) => {
         try {
             let user_email = profile.emails && profile.emails[0].value; //profile object has the user info
