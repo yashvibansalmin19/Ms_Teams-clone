@@ -2,9 +2,23 @@
   height: 100vh;
 }
 
-body{
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: auto;
+  height: auto;
   margin: 0;
 }
+
+/* html, body{
+  margin: 0;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+} */
 
 .button1{
   display: flex;
@@ -75,6 +89,7 @@ video{
 .main {
   height: 100vh;
   display: flex;
+  margin-bottom: 0;
 }
 
 .left_side {

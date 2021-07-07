@@ -1,0 +1,78 @@
+<!-- <!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
+
+
+    <title>CONNECT</title>
+    <link rel="shortcut icon" href="video-conference.png">
+    <link rel="stylesheet" href="styleNew.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body style="margin: 0;">
+
+    <div id="login" class="container-fluid" style="background-color:hsl(202, 100%, 42%) ;">
+
+
+        <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
+            <div class="container-fluid">
+
+                <a class="navbar-brand"> <img src="video-conference.png" alt="" width="40" height="40"
+                        class="d-inline-block" style="background: var(--bs-white); padding: 10px; float: left;"></img>
+                    CONNECT
+                </a>
+            </div>
+        </nav>
+        <section class="register-photo" style="background: var(--bs-blue);margin: 0;color: #0088D6;">
+            <div class="form-container">
+                <div class="image-holder" style="background: url('3697251.jpg') center / contain no-repeat;"></div>
+                <form action="/login" method="POST">
+                    <h2 class="text-center"><strong>Login</strong> into your account.</h2>
+                     <% if (messages.error) { %>
+                        <%= messages.error %>
+                            <% } %> 
+                    <div class="mb-4"><label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4"> <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                    <div class="mb-4"><a href="index.js"></a><button class="btn btn-primary d-block w-150"
+                            type="submit">Login</button></a> </div><a class="already" href="/register">Do
+                        not have an
+                        account? Sign Up here.</a>
+                </form>
+            </div>
+        </section>
+
+</body>
+
+</html> -->
+
+<h1>Login</h1>
+<% if (messages.error) { %>
+    <%= messages.error %>
+        <% } %>
+            <form action="/login" method="POST">
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" size="50px" placeholder="Enter your name"
+                        name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <a href="google_oauth.js"> <button>Login using google</button></a>
+            <a href="/register">Register</a>

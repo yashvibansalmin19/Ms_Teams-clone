@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 let myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '5500'
 })
 
 // let userName;
@@ -70,7 +70,7 @@ myPeer.on('open', id => {
 // Defining the funtions
 
 function scrollToBottom() {
-    let d = $('.main__chat_window');
+    let d = $('.chat_window');
     d.scrollTop(d.prop("scrollHeight"));
 }
 
