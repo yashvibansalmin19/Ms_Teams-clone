@@ -24,12 +24,16 @@ const cookieSession = require('cookie-session')
 require('./google_oauth');
 
 app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+// // parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: true }))
 
-// parse application/json
-app.use(bodyParser.json())
+// // parse application/json
+// app.use(bodyParser.json())
 
 // For an actual app you should configure this with an experation time, better keys, proxy and secure
 app.use(cookieSession({
