@@ -22,10 +22,10 @@ passport.use(new GoogleStrategy({
             let redirect_url = "";
             if (user) {
                 const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' }); //generating token
-                redirect_url = `http://localhost:5500/${token}` //registered on FE for auto-login
+                redirect_url = `https://connect-video-chat.herokuapp.com/index/${token}` //registered on FE for auto-login
                 return done(null, redirect_url);  //redirect_url will get appended to req.user object : passport.js in action
             } else {
-                redirect_url = `http://localhost:5500/user-not-found/`;  // fallback page
+                redirect_url = `https://connect-video-chat.herokuapp.com/login/`;  // fallback page
                 return done(null, redirect_url);
             }
         } catch (error) {

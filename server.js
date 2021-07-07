@@ -40,6 +40,15 @@ app.use(cookieSession({
 // const session = require('express-session')
 const methodOverride = require('method-override')
 
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+app.get('/auth/google/redirect', passport.authenticate('google', { session: false, failureRedirect: `https://connect-video-chat.herokuapp.com/auth/google/redirect` }), (req, res) => {
+    res.redirect(req.user); //req.user has the redirection_url
+});
+
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
@@ -76,19 +85,6 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-// app.use(session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }))
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(methodOverride('_method'))
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-app.get('/auth/google/redirect', passport.authenticate('google', { session: false, failureRedirect: `https://connect-video-chat.herokuapp.com/auth/google/redirect` }), (req, res) => {
-    res.redirect(req.user); //req.user has the redirection_url
-});
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
