@@ -2,7 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 passport.use(new GoogleStrategy({
-    callbackURL: `https://connect-video-chat.herokuapp.com/auth/google/redirect`,
+    callbackURL: `http://localhost:5500/auth/google/redirect`,
     clientID: "5610789853-cgup6npmfrebr5sl8kfs63h6ovd83ti9.apps.googleusercontent.com",
     clientSecret: "0zA3EONrT63mui2ygwBIyNiX"
 },
@@ -22,10 +22,10 @@ passport.use(new GoogleStrategy({
             let redirect_url = "";
             if (user) {
                 const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' }); //generating token
-                redirect_url = `https://connect-video-chat.herokuapp.com/index/${token}` //registered on FE for auto-login
+                redirect_url = `http://localhost:5500/auth/google/redirect/index/${token}` //registered on FE for auto-login
                 return done(null, redirect_url);  //redirect_url will get appended to req.user object : passport.js in action
             } else {
-                redirect_url = `https://connect-video-chat.herokuapp.com/login/`;  // fallback page
+                redirect_url = `http://localhost:5500/auth/google/redirect/login/`;  // fallback page
                 return done(null, redirect_url);
             }
         } catch (error) {
