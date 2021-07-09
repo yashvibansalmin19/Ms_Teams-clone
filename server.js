@@ -53,9 +53,9 @@ app.get('/auth/google/redirect',
     passport.authenticate('google',
         {
             session: false,
-            failureRedirect: `https://connect-video-chat.herokuapp.com/login`
+            failureRedirect: `http://localhost:5500/login`
         }), (req, res) => {
-            res.redirect('https://connect-video-chat.herokuapp.com/index'); //req.user has the redirection_url
+            res.redirect('http://localhost:5500/index'); //req.user has the redirection_url
         });
 
 const initializePassport = require('./passport-config')
@@ -127,7 +127,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
 
-    res.redirect('/login')
+    res.redirect('/index')
 }
 
 function checkNotAuthenticated(req, res, next) {
@@ -174,6 +174,6 @@ io.on('connection', socket => {
 
 //listener
 //process.env.PORT
-server.listen(process.env.PORT, function () {
-    console.log('server running on https://connect-video-chat.herokuapp.com/');
+server.listen(5500, function () {
+    console.log('server running on http://localhost:5500');
 });
