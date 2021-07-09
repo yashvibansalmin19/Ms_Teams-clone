@@ -21,8 +21,14 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
+//static hosting using express.
+
+app.set('view engine', 'ejs');
+
 require('./google_oauth');
 
+app.use(express.static('public'));
+app.use('/peerjs', peerserver);
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({
@@ -30,50 +36,27 @@ app.use(express.urlencoded({
 }));
 
 // parse application/x-www-form-urlencoded
+
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
+
 app.use(bodyParser.json())
 
 // For an actual app you should configure this with an experation time, better keys, proxy and secure
+
 app.use(cookieSession({
     name: 'tuto-session',
     keys: ['key1', 'key2']
 }))
 
 // const session = require('express-session')
+
 const methodOverride = require('method-override')
 
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-app.get('/auth/google/redirect',
-    passport.authenticate('google',
-        {
-            session: false,
-            failureRedirect: `http://localhost:5500/login`
-        }), (req, res) => {
-            res.redirect('http://localhost:5500/index'); //req.user has the redirection_url
-        });
-
-const initializePassport = require('./passport-config')
-initializePassport(
-    passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
-)
-
-app.get('/index', (req, res) => {
-    res.render('index')
-})
-
-const users = []
-
-//static hosting using express.
-
-app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
@@ -83,6 +66,28 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+app.get('/auth/google/redirect', passport.authenticate('google',
+    {
+        session: false,
+        failureRedirect: `http://localhost:5500/login`
+    }), (req, res) => {
+        res.redirect('http://localhost:5500/index'); //req.user has the redirection_url
+    });
+
+const initializePassport = require('./passport-config')
+initializePassport(
+    passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+)
+
+const users = []
+
+app.get('/index', (req, res) => {
+    res.render('index')
+})
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
@@ -94,7 +99,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/index',
-    failureRedirect: '/login',
+    failureRedirect: '/',
     failureFlash: true
 }))
 
@@ -117,10 +122,10 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 })
 
-app.delete('/logout', (req, res) => {
-    req.logOut()
-    res.redirect('/login')
-})
+// app.delete('/logout', (req, res) => {
+//     req.logOut()
+//     res.redirect('/login')
+// })
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -136,13 +141,6 @@ function checkNotAuthenticated(req, res, next) {
     }
     next()
 }
-
-app.use(express.static('public'));
-app.use('/peerjs', peerserver);
-
-// app.get('/', (req, res) => {
-//     res.render('index')
-// })
 
 app.get('/newMeeting/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
