@@ -29,11 +29,11 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-// // parse application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }))
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// // parse application/json
-// app.use(bodyParser.json())
+// parse application/json
+app.use(bodyParser.json())
 
 // For an actual app you should configure this with an experation time, better keys, proxy and secure
 app.use(cookieSession({
@@ -65,21 +65,6 @@ const users = []
 //static hosting using express.
 
 app.set('view engine', 'ejs');
-
-// app.use(express.static('public'));
-// app.use('/peerjs', peerserver);
-
-// // app.get('/', (req, res) => {
-// //     res.render('index')
-// // })
-
-// app.get('/newMeeting/', (req, res) => {
-//     res.redirect(`/${uuidV4()}`)
-// })
-
-// app.get('/:meetingId', (req, res) => {
-//     res.render('newMeeting', { roomId: req.params.meetingId })
-// })
 
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
