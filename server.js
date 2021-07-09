@@ -53,9 +53,9 @@ app.get('/auth/google/redirect',
     passport.authenticate('google',
         {
             session: false,
-            failureRedirect: `http://localhost:5500/login`
+            failureRedirect: `https://connect-video-chat.herokuapp.com/login`
         }), (req, res) => {
-            res.redirect('http://localhost:5500/index'); //req.user has the redirection_url
+            res.redirect('https://connect-video-chat.herokuapp.com/index'); //req.user has the redirection_url
         });
 
 const initializePassport = require('./passport-config')
