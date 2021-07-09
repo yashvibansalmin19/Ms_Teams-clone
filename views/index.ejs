@@ -20,7 +20,7 @@
 
 <body style="margin: 0;">
 
-    <div id="login" class="container-fluid" style="background-color:hsl(202, 100%, 42%) ;">
+    <div id="login" class="container-fluid">
 
 
         <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
@@ -33,23 +33,28 @@
             </div>
         </nav>
 
-        <section class="register-photo" style="background: var(--bs-blue);margin: 0;color: #0088D6;">
-            <div class="form-container">
-                <div class="image-holder" style="background: url('3697251.jpg') center / contain no-repeat;"></div>
-                <form action="display.html" method="GET">
-                    <h2 class="text-center" style="font-size: 22px;">Collaborate and Celebrate</h2>
-                    <div class="mb-3" id="Schedule_meeting"><button class="btn btn-primary d-block w-250" type="button"
-                            title="schedule meeting" style="background-color:#eb3b60; color:#ffffff">Schedule
-                            Meeting</button><br></br>
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card d-block justify-content-center">
+                    <div class="card-header">
+                        <h2><strong>Colaborate</strong> and celebrate</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="Schedule_meeting"><button class="btn btn-primary d-block w-250" type="button"
+                                title="schedule meeting">Schedule
+                                Meeting</button><br></br>
 
-                        <div class="mb-3"><a href="/newMeeting/"><button class="btn btn-primary d-block w-250"
-                                    type="button" title="start meeting"
-                                    style="background-color:#eb3b60; color:#ffffff">Start instant
-                                    Meeting</button></a>
-                </form>
+                            <div><a href="/newMeeting/"><button class="btn btn-primary d-block w-250" type="button"
+                                        title="start meeting">Start
+                                        instant
+                                        Meeting</button></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </section>
-
+        </div>
     </div>
 
 </body>
