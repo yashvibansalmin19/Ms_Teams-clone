@@ -13,7 +13,7 @@ const { ExpressPeerServer } = require('peer');    // webrtc framework for video 
 const peerserver = ExpressPeerServer(server, {
     debug: true
 });
-
+const models = require('./models')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
@@ -79,15 +79,11 @@ app.get('/auth/google/redirect', passport.authenticate('google',
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
+    email => Users.find(user => User.email === email),
+    id => Users.find(user => User.id === id)
 )
 
-const users = []
-
-app.get('/index', (req, res) => {
-    res.render('index')
-})
+const Users = []
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
@@ -120,6 +116,10 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     } catch {
         res.redirect('/register')
     }
+})
+
+app.get('/index', (req, res) => {
+    res.render('index')
 })
 
 // app.delete('/logout', (req, res) => {
@@ -172,6 +172,8 @@ io.on('connection', socket => {
 
 //listener
 //process.env.PORT
-server.listen(5500, function () {
-    console.log('server running on http://localhost:5500');
-});
+models.sync().then(x => {
+    server.listen(5500, function () {
+        console.log('server running on http://localhost:5500');
+    });
+})
