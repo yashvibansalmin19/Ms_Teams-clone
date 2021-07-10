@@ -73,7 +73,7 @@ app.get('/auth/google/redirect', passport.authenticate('google',
         session: false,
         failureRedirect: `http://localhost:5500/login`
     }), (req, res) => {
-        res.redirect('http://localhost:5500/index'); //req.user has the redirection_url
+        res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
     });
 
 const initializePassport = require('./passport-config')
@@ -94,7 +94,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/index',
+    successRedirect: '/Meeting',
     failureRedirect: '/',
     failureFlash: true
 }))
@@ -118,8 +118,8 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 })
 
-app.get('/index', (req, res) => {
-    res.render('index')
+app.get('/Meeting', (req, res) => {
+    res.render('Meeting.ejs')
 })
 
 // app.delete('/logout', (req, res) => {
@@ -132,7 +132,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
 
-    res.redirect('/index')
+    res.redirect('/Meeting')
 }
 
 function checkNotAuthenticated(req, res, next) {
