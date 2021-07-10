@@ -13,7 +13,10 @@ const sequelize = new Sequelize('d3k5anfnkmf7kj', 'jbbhtttxoavnua', '7ec54ba61f0
 })
 
 const models = {
-    user: require('./user')(sequelize),   //.import('./user'),
+    user: require('./user')(sequelize),
+    token: require('./token')(sequelize),
+    //room: require('./room')(sequelize),
+    //message: require('./chat')(sequelize),
 }
 
 Object.keys(models).forEach((modelName) => {

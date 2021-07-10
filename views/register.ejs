@@ -11,6 +11,7 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="LoginPage.css">
 </head>
 
@@ -22,7 +23,7 @@
                     <h3>Sign Up</h3>
                 </div>
                 <div class="card-body">
-                    <form action="/register" method="POST">
+                    <form action="/Register" method="post">
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -34,27 +35,18 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control" placeholder="password">
+                            <input type="password" class="form-control" placeholder="password" id="password"
+                                name="password" required>
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-email"></i></span>
+                                <span class="input-group-text"><i class="material-icons">&#xe158;</i></span>
                             </div>
                             <input type="email" class="form-control" placeholder="email" id="email" name="email"
                                 required>
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            <input type="password" class="form-control" placeholder="password" id="password"
-                                name="password" required>
-                        </div>
                         <div class="form-group">
                             <input type="submit" value="Register" class="btn float-right login_btn">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Login" class="btn float-left login_btn">
                         </div>
                     </form>
                 </div>
@@ -62,5 +54,24 @@
         </div>
     </div>
 </body>
+<script>
+    const Name = document.getElementById('name').innerHTML;
+    console.log(Name);
+</script>
 
 </html>
+
+<!-- .ajax ({
+type: "POST",
+url: "http://localhost:5500/register/",
+
+const data = {
+"username" : "hdjsibwwji",
+"email" : "email@email.xom",
+"password": "jdkskn" }
+dataType : json,
+cache: false,
+success: function(data){
+console.log(data);
+}
+}); -->

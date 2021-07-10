@@ -26,9 +26,6 @@ const cookieSession = require('cookie-session')
 app.set('view engine', 'ejs');
 
 require('./google_oauth');
-
-app.use(express.static('public'));
-app.use('/peerjs', peerserver);
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({
@@ -76,7 +73,8 @@ app.get('/auth/google/redirect', passport.authenticate('google',
         res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
     });
 
-const initializePassport = require('./passport-config')
+const initializePassport = require('./passport-config');
+const { profile } = require('console');
 initializePassport(
     passport,
     email => user.find(user => user.email === email),
@@ -84,6 +82,14 @@ initializePassport(
 )
 
 const user = []
+
+app.post('/Register', function (req, res) {
+    res.redirect('/login');
+    console.log(profile);
+});
+
+app.use(express.static('public'));
+app.use('/peerjs', peerserver);
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
@@ -101,6 +107,7 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register.ejs')
+    console.log(user);
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
