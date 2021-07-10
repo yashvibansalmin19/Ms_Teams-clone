@@ -79,11 +79,11 @@ app.get('/auth/google/redirect', passport.authenticate('google',
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
-    email => Users.find(user => User.email === email),
-    id => Users.find(user => User.id === id)
+    email => user.find(user => user.email === email),
+    id => user.find(user => user.id === id)
 )
 
-const Users = []
+const user = []
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
