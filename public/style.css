@@ -13,16 +13,9 @@ body {
   margin: 0;
 }
 
-/* html, body{
-  margin: 0;
-  overflow-x: hidden;
-  height: 100%;
-  width: 100%;
-} */
-
 .button1{
   display: flex;
-  background-color: #0088D6;
+  background-color: #52307c;
   border-radius: 50%;
   border: none;
   color: white;
@@ -37,7 +30,7 @@ body {
 } 
 
 .button1:hover{
-  background-color: #06568B;
+  background-color: #5d01a8;
 }
 
 /* #video-grid{

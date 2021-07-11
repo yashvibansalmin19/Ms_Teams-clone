@@ -12,6 +12,7 @@ let myPeer = new Peer(undefined, {
 const peers = {};
 let localVideo;
 let remoteVideo;
+// let userName = localStorage.getItem("User");
 
 navigator.mediaDevices.getUserMedia({  //apna video 
     video: true,
@@ -24,6 +25,7 @@ navigator.mediaDevices.getUserMedia({  //apna video
     prompt('Press "ctrl+c" to copy meeting URL:', window.location);
     socket.on('user-connected', userId => {
         connectToNewUser(userId, stream)
+        //socket.emit('user-connected', userName);
     })
 
     // input value
@@ -34,12 +36,18 @@ navigator.mediaDevices.getUserMedia({  //apna video
 
     $('html').keydown(function (e) {
         if (e.which == 13 && text.val().length !== 0) {
-            socket.emit('message', text.val());
+            socket.emit('message', text.val(), localStorage.getItem("User"));
             text.val('')
         }
     });
-    socket.on("createMessage", message => {
-        $("ul").append(`<li class="message"><b>${req.user.displayName}</b><br/>${message}</li>`);
+    socket.on("createMessage", (message, customUserId) => {
+        console.log(customUserId)
+        if (!customUserId) {
+            $("ul").append(`<li class="message"><b>Guest</b><br/>${message}</li>`);
+        }
+        else {
+            $("ul").append(`<li class="message"><b>${customUserId}</b><br/>${message}</li>`);
+        }
         scrollToBottom()
     })
 })

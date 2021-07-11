@@ -8,13 +8,20 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
-
+    <script>
+        const UserId = "<%= uId %>"
+        console.log(UserId)
+        localStorage.setItem("User", UserId)
+        console.log(localStorage.getItem("User"))
+    </script>
+    <script src='https://use.fontawesome.com/aa2b8cb467.js ' crossorigin='anonymous'></script>
 
     <title>CONNECT</title>
-    <link rel="shortcut icon" href="video-conference.png">
-    <link rel="stylesheet" href="styleNew.css">
-    <script src='https://use.fontawesome.com/aa2b8cb467.js ' crossorigin='anonymous'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="shortcut icon" type="text/css" href="/video-conference.png">
+    <link rel="stylesheet" type="text/css" href="/styleNew.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
@@ -26,7 +33,7 @@
         <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
             <div class="container-fluid">
 
-                <a class="navbar-brand"> <img src="video-conference.png" alt="" width="40" height="40"
+                <a class="navbar-brand"> <img src="/video-conference.png" alt="" width="40" height="40"
                         class="d-inline-block" style="background: var(--bs-white); padding: 10px; float: left;"></img>
                     CONNECT
                 </a>

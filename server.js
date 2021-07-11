@@ -21,6 +21,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
+
 //static hosting using express.
 
 app.set('view engine', 'ejs');
@@ -81,7 +82,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 app.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/failed' }),
     function (req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/Meeting');
+        res.render('HomePage', { uId: req.user.displayName });
     }
 );
 
@@ -116,7 +117,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/Meeting',
+    successRedirect: '/HomePage',
     failureRedirect: '/',
     failureFlash: true
 }))
@@ -144,8 +145,8 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     console.log(req.body);
 });
 
-app.get('/Meeting', (req, res) => {
-    res.render('Meeting.ejs')
+app.get('/HomePage', (req, res) => {
+    res.render('HomePage.ejs')
 })
 
 // app.delete('/logout', (req, res) => {
@@ -158,7 +159,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
 
-    res.redirect('/Meeting')
+    res.redirect('/HomePage')
 }
 
 function checkNotAuthenticated(req, res, next) {
@@ -185,10 +186,21 @@ io.on('connection', socket => {
 
         // messages
 
-        socket.on('message', (message) => {
+        socket.on('message', (message, customUserId) => {
             //send message to the same room
-            io.to(roomId).emit('createMessage', message)
+            console.log(customUserId)
+            // (async () => {
+            const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
+            saveMessage.userId =
+                // })();
+                io.to(roomId).emit('createMessage', message, customUserId)
         });
+
+        // socket.on('message', (message) => {
+        //     //send message to the same room
+        //     io.to(roomId).emit('createMessage', message)
+        //     io.to(roomId).emit('User', userName);
+        // });
         socket.on('disconnect', () => {
             socket.broadcast.to(roomId).emit('user-disconnected', userId)
         })
