@@ -10,7 +10,6 @@ let myPeer = new Peer(undefined, {
 // document.getElementById('Name').innerHTML = window.location.search = userName;
 
 const peers = {};
-const senders = ([]);
 let localVideo;
 let remoteVideo;
 
@@ -40,7 +39,7 @@ navigator.mediaDevices.getUserMedia({  //apna video
         }
     });
     socket.on("createMessage", message => {
-        $("ul").append(`<li class="message"><b>${profile.name}</b><br/>${message}</li>`);
+        $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
         scrollToBottom()
     })
 })
@@ -139,17 +138,22 @@ function on_off() {
 
 
 function shareScreen() {
-    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
-        const screenTrack = stream.getTracks()[0];
-        senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
+    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(function (stream) {
+        let videoTrack = stream.getVideoTracks()[0];
+        remoteVideo.forEach(function (myPeer) {
+            var sender = myPeer.getSenders().find(function (s) {
+                return s.track.kind == videoTrack.kind;
+            });
+            console.log('found sender:', sender);
+            sender.replaceTrack(videoTrack);
+        });
         screenTrack.onended = function () {
-            senders.current.find(sender => sender.track.kind === "video").replaceTrack(localVideo.current.getTracks()[1]);
+            sender.replaceTrack(localVideo.getTracks()[1]);
         }
     }).catch((err) => {
-        console.log(err)
+        console.log(err);
     })
 }
-
 // Stop Screen Share
 
 // function stopScreenShare() {

@@ -83,20 +83,24 @@ initializePassport(
 
 const user = []
 
-app.post('/Register', function (req, res) {
-    res.redirect('/login');
-    console.log(profile);
-});
+// app.post('/Register', function (req, res) {
+//     res.redirect('/login');
+//     console.log(profile);
+// });
 
 app.use(express.static('public'));
 app.use('/peerjs', peerserver);
+
+app.get('/', function (req, res) {
+    res.render('login.ejs');
+})
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login.ejs', { name: req.user.name })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-    res.render('login.ejs')
+    res.render('{Please Sign Up!}');
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -144,7 +148,7 @@ function checkAuthenticated(req, res, next) {
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        return res.redirect('/')
+        return res.redirect('/register')
     }
     next()
 }
