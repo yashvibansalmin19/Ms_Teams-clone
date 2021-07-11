@@ -25,7 +25,7 @@ const cookieSession = require('cookie-session')
 
 app.set('view engine', 'ejs');
 
-require('./google_oauth');
+require('./passport-setup');
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({
@@ -64,14 +64,26 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-app.get('/auth/google/redirect', passport.authenticate('google',
-    {
-        session: false,
-        failureRedirect: `http://localhost:5500/login`
-    }), (req, res) => {
-        res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
-    });
+// app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+// app.get('/auth/google/redirect', passport.authenticate('google',
+//     {
+//         session: false,
+//         failureRedirect: `http://localhost:5500/login`
+//     }), (req, res) => {
+//         res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
+//     });
+
+app.get('/working/good', (req, res) => res.send(`Welcome The Great ${req.user.displayName}!`))
+
+// Auth Routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/failed' }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/working/good');
+    }
+);
 
 const initializePassport = require('./passport-config');
 const { profile } = require('console');
