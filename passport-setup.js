@@ -5,8 +5,8 @@ const Sequelize = require('sequelize')
 
 const { Model } = require('sequelize');
 
-const sequelize = new Sequelize('d3k5anfnkmf7kj', 'jbbhtttxoavnua', '7ec54ba61f0e69825718807f776ae577441129549cd565e2b8669d106a30389f', {
-    host: 'ec2-54-91-188-254.compute-1.amazonaws.com',
+const sequelize = new Sequelize('d65q5gakevpsp6', 'powszzmwuzhrdb', '1d93428f3e6f02a0286edcedbc526be2aba294e5d20245f79e275fb09fa9f604', {
+    host: 'ec2-54-145-249-177.compute-1.amazonaws.com',
     port: 5432,
     dialect: "postgres",
     dialectOptions: {

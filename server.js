@@ -73,7 +73,7 @@ app.use(require('express-session')({
 //         res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
 //     });
 
-app.get('/working/good', (req, res) => res.send(`Welcome The Great ${req.user.displayName}!`))
+//app.get('/working/good', (req, res) => res.send(`Welcome The Great ${req.user.displayName}!`))
 
 // Auth Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -81,7 +81,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 app.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/failed' }),
     function (req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/working/good');
+        res.redirect('/Meeting');
     }
 );
 
@@ -189,7 +189,6 @@ io.on('connection', socket => {
             //send message to the same room
             io.to(roomId).emit('createMessage', message)
         });
-
         socket.on('disconnect', () => {
             socket.broadcast.to(roomId).emit('user-disconnected', userId)
         })

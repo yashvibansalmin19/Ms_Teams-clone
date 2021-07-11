@@ -39,7 +39,7 @@ navigator.mediaDevices.getUserMedia({  //apna video
         }
     });
     socket.on("createMessage", message => {
-        $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
+        $("ul").append(`<li class="message"><b>${req.user.displayName}</b><br/>${message}</li>`);
         scrollToBottom()
     })
 })
