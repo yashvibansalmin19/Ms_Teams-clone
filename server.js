@@ -100,7 +100,7 @@ app.get('/', checkAuthenticated, (req, res) => {
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-    res.render('{Please Sign Up!}');
+    res.redirect('/register');
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -114,20 +114,23 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
     console.log(user);
 })
 
+
 app.post('/register', checkNotAuthenticated, async (req, res) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        users.push({
-            id: Date.now().toString(),
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword
-        })
-        res.redirect('/login')
-    } catch {
-        res.redirect('/register')
-    }
-})
+    // try {
+    //     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    //     users.push({
+    //         id: Date.now().toString(),
+    //         name: req.body.name,
+    //         email: req.body.email,
+    //         password: hashedPassword
+    //     })
+    //     res.redirect('/login')
+    // } catch {
+    //     res.redirect('/register')
+    // }
+    // res.redirect('/login');
+    console.log(req.body);
+});
 
 app.get('/Meeting', (req, res) => {
     res.render('Meeting.ejs')

@@ -46,7 +46,8 @@
                                 required>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Register" class="btn float-right login_btn">
+                            <a href='/login'> <input type="submit" value="Register"
+                                    class="btn float-right login_btn"></a>
                         </div>
                     </form>
                 </div>
@@ -55,8 +56,22 @@
     </div>
 </body>
 <script>
-    const Name = document.getElementById('name').innerHTML;
-    console.log(Name);
+    const post_name = document.getElementById('name').innerHTML;
+    const post_email = document.getElementById('email').innerHTML;
+    const post_password = document.getElementById('password').innerHTML;
+    const data = { post_name, post_email, post_password };
+    const options = {
+        method = 'POST',
+        hearders: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    fetch('/register', options).then(response => {
+        console.log(response);
+    });
+
+
 </script>
 
 </html>
