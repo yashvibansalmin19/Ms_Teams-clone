@@ -26,7 +26,7 @@ const cookieSession = require('cookie-session')
 
 app.set('view engine', 'ejs');
 
-require('./passport-setup');
+require('./google-oauth');
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({
@@ -191,9 +191,10 @@ io.on('connection', socket => {
             console.log(customUserId)
             // (async () => {
             const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
-            saveMessage.userId =
-                // })();
-                io.to(roomId).emit('createMessage', message, customUserId)
+            // models.models.
+            // saveMessage.userId = 
+            // })();
+            io.to(roomId).emit('createMessage', message, customUserId)
         });
 
         // socket.on('message', (message) => {
@@ -210,7 +211,7 @@ io.on('connection', socket => {
 //listener
 //process.env.PORT
 models.sync().then(x => {
-    server.listen(5500, function () {
-        console.log('server running on http://localhost:5500');
+    server.listen(process.env.PORT, function () {
+        console.log('server running on https://connect-video-chat.herokuapp.com/');
     });
 })
