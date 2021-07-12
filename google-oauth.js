@@ -19,17 +19,6 @@ const sequelize = new Sequelize('d65q5gakevpsp6', 'powszzmwuzhrdb', '1d93428f3e6
 
 const models = require('./models')
 
-// class User extends Model {}
-//   User.init({
-//     googleId : Sequelize.STRING
-//   }, {
-//     sequelize,
-//     modelName: 'user'
-// });
-
-
-
-
 passport.serializeUser(function (user, done) {
     /*
     From the user take just the id (to minimize the cookie size) and just pass the id of the user
@@ -58,16 +47,6 @@ passport.use(new GoogleStrategy({
             const user = await models.models.user.findOrCreate({ where: { googleId: profile.id } })
             return done(null, user);
         })();
-
-
-
-        // (async () => {
-        // await sequelize.sync();
-        // const newUser = User.build({ googleId: profile.id });
-        //   console.log(newUser instanceof User); // true
-        //   console.log(newUser.name); // "user"
-        //   await newUser.save();
-        // })();
         /*
          use the profile info (mainly profile id) to check if the user is registerd in ur db
          If yes select the user and pass him to the done callback

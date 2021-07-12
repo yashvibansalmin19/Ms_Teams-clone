@@ -9,11 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
     <script>
-        const UserId = "<%= uId %>"
-        console.log(UserId)
-        localStorage.setItem("User", UserId)
-        console.log(localStorage.getItem("User"))
+        try {
+            const UserId = "<%= uId %>"
+            console.log(UserId)
+            localStorage.setItem("User", UserId)
+            console.log(localStorage.getItem("User"))
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+
     </script>
+
     <script src='https://use.fontawesome.com/aa2b8cb467.js ' crossorigin='anonymous'></script>
 
     <title>CONNECT</title>

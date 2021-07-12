@@ -6,15 +6,10 @@ let myPeer = new Peer(undefined, {
     port: '443'
 })
 
-// let userName;
-// document.getElementById('Name').innerHTML = window.location.search = userName;
-
-const peers = {};
 let localVideo;
 let remoteVideo;
-// let userName = localStorage.getItem("User");
 
-navigator.mediaDevices.getUserMedia({  //apna video 
+navigator.mediaDevices.getUserMedia({  // storing and displaying local video stream
     video: true,
     audio: true
 }).then(stream => {
@@ -25,7 +20,6 @@ navigator.mediaDevices.getUserMedia({  //apna video
     prompt('Press "ctrl+c" to copy meeting URL:', window.location);
     socket.on('user-connected', userId => {
         connectToNewUser(userId, stream)
-        //socket.emit('user-connected', userName);
     })
 
     // input value
@@ -52,7 +46,7 @@ navigator.mediaDevices.getUserMedia({  //apna video
     })
 })
 
-myPeer.on('call', call => { //jo call kr rha h uska video
+myPeer.on('call', call => { // storing and displaying remote video stream
 
     navigator.mediaDevices.getUserMedia({
         video: true,
@@ -66,11 +60,11 @@ myPeer.on('call', call => { //jo call kr rha h uska video
     })
 })
 
-socket.on('user-disconnected', userId => {
+socket.on('user-disconnected', userId => {   //when user gets disconnected
     if (peers[userId]) peers[userId].close()
 })
 
-myPeer.on('open', id => {
+myPeer.on('open', id => {               // sending message to server about room joining
     socket.emit('join-room', ROOM_ID, id)
 })
 
@@ -142,37 +136,19 @@ function on_off() {
     }
 }
 
-// Share your screen
+// Share your screen (under development)
 
-
-function shareScreen() {
-    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(function (stream) {
-        let videoTrack = stream.getVideoTracks()[0];
-        remoteVideo.forEach(function (myPeer) {
-            var sender = myPeer.getSenders().find(function (s) {
-                return s.track.kind == videoTrack.kind;
-            });
-            console.log('found sender:', sender);
-            sender.replaceTrack(videoTrack);
-        });
-        screenTrack.onended = function () {
-            sender.replaceTrack(localVideo.getTracks()[1]);
-        }
-    }).catch((err) => {
-        console.log(err);
-    })
-}
-// Stop Screen Share
-
-// function stopScreenShare() {
-//     let videotrack = localVideo.getVideoTracks()[0];
-//     var sender = currentPeer.getSenders().find(function (s) {
-//         return s.track.kind == videotrack;
+// function shareScreen() {
+//     navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
+//         const screenTrack = stream.getTracks()[0];
+//         peers[userId].current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
+//         screenTrack.onended = function () {
+//             peers[userId].current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
+//         }
 //     })
-//     sender.replaceTrack(videotrack)
 // }
 
-//Chnaging icon
+//Changing icon on click
 
 function setMuteButton() {
     const html = `

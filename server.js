@@ -48,8 +48,6 @@ app.use(cookieSession({
     keys: ['key1', 'key2']
 }))
 
-// const session = require('express-session')
-
 const methodOverride = require('method-override')
 
 app.use(passport.initialize())
@@ -65,23 +63,13 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-// app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-// app.get('/auth/google/redirect', passport.authenticate('google',
-//     {
-//         session: false,
-//         failureRedirect: `http://localhost:5500/login`
-//     }), (req, res) => {
-//         res.redirect('http://localhost:5500/Meeting'); //req.user has the redirection_url
-//     });
-
-//app.get('/working/good', (req, res) => res.send(`Welcome The Great ${req.user.displayName}!`))
-
 // Auth Routes
+
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/failed' }),
     function (req, res) {
-        // Successful authentication, redirect home.
+        // Successful authentication, redirect homePage.
         res.render('HomePage', { uId: req.user.displayName });
     }
 );
@@ -96,11 +84,6 @@ initializePassport(
 
 const user = []
 
-// app.post('/Register', function (req, res) {
-//     res.redirect('/login');
-//     console.log(profile);
-// });
-
 app.use(express.static('public'));
 app.use('/peerjs', peerserver);
 
@@ -108,68 +91,67 @@ app.get('/', function (req, res) {
     res.render('login.ejs');
 })
 
-app.get('/', checkAuthenticated, (req, res) => {
-    res.render('login.ejs', { name: req.user.name })
-})
+// Login & Register & Authentication to website(under development)
 
-app.get('/login', checkNotAuthenticated, (req, res) => {
-    res.redirect('/register');
-})
+// app.get('/', checkAuthenticated, (req, res) => {
+//     res.render('login.ejs', { name: req.user.name })
+// })
 
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/HomePage',
-    failureRedirect: '/',
-    failureFlash: true
-}))
+// app.get('/login', checkNotAuthenticated, (req, res) => {
+//     res.redirect('/register');
+// })
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
-    res.render('register.ejs')
-    console.log(user);
-})
+// app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+//     successRedirect: '/HomePage',
+//     failureRedirect: '/',
+//     failureFlash: true
+// }))
+
+// app.get('/register', checkNotAuthenticated, (req, res) => {
+//     res.render('register.ejs')
+//     console.log(user);
+// })
 
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
-    // try {
-    //     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    //     users.push({
-    //         id: Date.now().toString(),
-    //         name: req.body.name,
-    //         email: req.body.email,
-    //         password: hashedPassword
-    //     })
-    //     res.redirect('/login')
-    // } catch {
-    //     res.redirect('/register')
-    // }
-    // res.redirect('/login');
-    console.log(req.body);
-});
+// app.post('/register', checkNotAuthenticated, async (req, res) => {
+//     console.log(req.body);
+// });
 
-app.get('/HomePage/', (req, res) => {
-    res.render('HomePage.ejs')
-})
+// app.get('/HomePage/', (req, res) => {
+//     if (!req.user.id) {
+//         res.render('Homepage .ejs', { uId: "" })
+//     }
+//     else {
+//         res.render('HomePage.ejs', { uId: req.user.displayName })
+//     }
+// })
 
 // app.delete('/logout', (req, res) => {
 //     req.logOut()
 //     res.redirect('/login')
 // })
 
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next()
-    }
+// function checkAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return next()
+//     }
 
-    res.redirect('/HomePage')
-}
+//     res.redirect('/HomePage')
+// }
 
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect('/register')
-    }
-    next()
-}
+// function checkNotAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return res.redirect('/register')
+//     }
+//     next()
+// }
 
 app.get('/newMeeting/', (req, res) => {
+    // UNDER DEVELOPMENT
+    // (async () => {
+    //     const roomDB = models.models.room.findOrCreate({ where: { roomId : "sfjskwrjedk32794", startTime : "123", userId : [1,2] } })
+    //     console.log(roomDB)
+    // })();
     res.redirect(`/${uuidV4()}`)
 })
 
@@ -189,19 +171,20 @@ io.on('connection', socket => {
         socket.on('message', (message, customUserId) => {
             //send message to the same room
             console.log(customUserId)
-            // (async () => {
             const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
-            // models.models.
-            // saveMessage.userId = 
-            // })();
             io.to(roomId).emit('createMessage', message, customUserId)
+
+            // UNDER DEVELOPMENT
+
+            // (async () => {
+            //     const userModel = models.models.user.findOne({ where: { googleId: customUserId } })
+            //     const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
+            //     saveMessage.userId = userModel.id
+            //     saveMessage.roomId = customRoomId
+            //     // saveMessage.save()
+            // })();
         });
 
-        // socket.on('message', (message) => {
-        //     //send message to the same room
-        //     io.to(roomId).emit('createMessage', message)
-        //     io.to(roomId).emit('User', userName);
-        // });
         socket.on('disconnect', () => {
             socket.broadcast.to(roomId).emit('user-disconnected', userId)
         })
@@ -209,9 +192,9 @@ io.on('connection', socket => {
 })
 
 //listener
-//process.env.PORT
+
 models.sync().then(x => {
     server.listen(process.env.PORT, function () {
-        console.log('server running on https://connect-video-chat.herokuapp.com/');
+        console.log('server running on https://connect-video-chat.herokuapp.com');
     });
 })
