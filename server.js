@@ -117,14 +117,14 @@ app.get('/', function (req, res) {
 //     console.log(req.body);
 // });
 
-// app.get('/HomePage/', (req, res) => {
-//     if (!req.user.id) {
-//         res.render('Homepage .ejs', { uId: "" })
-//     }
-//     else {
-//         res.render('HomePage.ejs', { uId: req.user.displayName })
-//     }
-// })
+app.get('/HomePage/', (req, res) => {
+    if (!req.user.id) {
+        res.render('Homepage .ejs', { uId: "" })
+    }
+    else {
+        res.render('HomePage.ejs', { uId: req.user.displayName })
+    }
+})
 
 // app.delete('/logout', (req, res) => {
 //     req.logOut()
@@ -166,9 +166,10 @@ io.on('connection', socket => {
         socket.on('message', (message, customUserId) => {
             //send message to the same room
             console.log(customUserId)
-            const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
-            io.to(roomId).emit('createMessage', message, customUserId)
 
+            const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
+
+            io.to(roomId).emit('createMessage', message, customUserId)
         });
 
         socket.on('disconnect', () => {
@@ -178,9 +179,9 @@ io.on('connection', socket => {
 })
 
 //listener
-
+//process.env.PORT
 models.sync().then(x => {
-    server.listen(process.env.PORT, function () {
-        console.log('server running on https://connect-video-chat.herokuapp.com');
+    server.listen(5500, function () {
+        console.log('server running on http://localhost:5500');
     });
 })
