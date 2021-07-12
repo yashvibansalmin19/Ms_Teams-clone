@@ -181,7 +181,7 @@ io.on('connection', socket => {
 //listener
 //process.env.PORT
 models.sync().then(x => {
-    server.listen(5500, function () {
-        console.log('server running on http://localhost:5500');
+    server.listen(process.env.PORT, function () {
+        console.log('server running on https://connect-video-chat.herokuapp.com/');
     });
 })
