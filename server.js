@@ -147,11 +147,6 @@ app.get('/', function (req, res) {
 // }
 
 app.get('/newMeeting/', (req, res) => {
-    // UNDER DEVELOPMENT
-    // (async () => {
-    //     const roomDB = models.models.room.findOrCreate({ where: { roomId : "sfjskwrjedk32794", startTime : "123", userId : [1,2] } })
-    //     console.log(roomDB)
-    // })();
     res.redirect(`/${uuidV4()}`)
 })
 
@@ -174,15 +169,6 @@ io.on('connection', socket => {
             const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
             io.to(roomId).emit('createMessage', message, customUserId)
 
-            // UNDER DEVELOPMENT
-
-            // (async () => {
-            //     const userModel = models.models.user.findOne({ where: { googleId: customUserId } })
-            //     const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
-            //     saveMessage.userId = userModel.id
-            //     saveMessage.roomId = customRoomId
-            //     // saveMessage.save()
-            // })();
         });
 
         socket.on('disconnect', () => {
