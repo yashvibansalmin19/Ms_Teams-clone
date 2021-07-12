@@ -117,15 +117,6 @@ app.get('/', function (req, res) {
 //     console.log(req.body);
 // });
 
-app.get('/HomePage/', (req, res) => {
-    if (!req.user.id) {
-        res.render('Homepage .ejs', { uId: "" })
-    }
-    else {
-        res.render('HomePage.ejs', { uId: req.user.displayName })
-    }
-})
-
 // app.delete('/logout', (req, res) => {
 //     req.logOut()
 //     res.redirect('/login')
@@ -145,6 +136,15 @@ app.get('/HomePage/', (req, res) => {
 //     }
 //     next()
 // }
+
+app.get('/HomePage/', (req, res) => {
+    if (!req.user.id) {
+        res.render('Homepage .ejs', { uId: "" })
+    }
+    else {
+        res.render('HomePage.ejs', { uId: req.user.displayName })
+    }
+})
 
 app.get('/newMeeting/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
