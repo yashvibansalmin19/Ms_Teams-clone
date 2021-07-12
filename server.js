@@ -145,7 +145,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     console.log(req.body);
 });
 
-app.get('/HomePage/', (req, res) => {
+app.get('/HomePage', (req, res) => {
     res.render('HomePage.ejs')
 })
 
