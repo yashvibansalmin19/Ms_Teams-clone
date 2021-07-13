@@ -36,6 +36,8 @@ Welcome to connect repository. This contains all the code that I have written fo
 7. **PassportJS** is the authentication middleware provided by NodeJS framework. The whole process of authentication is eased out as passportJS provides comprehensive strategies to login via username and password. In this case the google account information (name, google id).
 8. **PostgresSQL** is the SQL database which I have used to store the user information, messages, and room id (meeting id) so that they can be displayed after you leave the meeting.
 
+The images folder contains infographics made by me, which explains the working og PeerJS and Google Oauth API.
+
 I have tried to build this project under Microsoft Engage Program' 21. This is my first experience with thid developing environment. I tried to deliver the in these 4 weeks. I hope you find it good.
 
 Thank you!
