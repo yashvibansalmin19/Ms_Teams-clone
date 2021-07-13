@@ -1,0 +1,65 @@
+.main {
+    height: 100vh;
+    display: flex;
+    margin-bottom: 0;
+}
+
+.right_side {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+}
+
+.meeting_id {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+  
+.meetings{
+    color: white;
+    list-style: none;
+}
+
+.left_side {
+    flex: 0.2
+}
+  
+.left_side {
+    background-color: #242324;
+    border-left: 1px solid #3D3D42;
+}
+  
+.left_side {
+    display: flex;
+    flex-direction: column;
+}
+  
+.header {
+    padding-top: 5px;
+    color: #F5F5F5;
+    text-align: center;
+}
+  
+.chat_window {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+  
+.messages{
+    color: white;
+    list-style: none;
+}
+  
+.message_container {
+    padding: 12px 12px;
+    display: flex;
+}
+  
+.message_container input {
+    flex-grow: 1.5px;
+    background-color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    color: #F5F5F5;
+}
+  

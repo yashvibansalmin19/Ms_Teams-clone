@@ -154,6 +154,10 @@ app.get('/:meetingId', (req, res) => {
     res.render('newMeeting', { roomId: req.params.meetingId })
 })
 
+app.get('/chatRoom/', (req, res) => {
+    res.render('chatRoom.ejs');
+})
+
 // Signalling handlers
 
 io.on('connection', socket => {
