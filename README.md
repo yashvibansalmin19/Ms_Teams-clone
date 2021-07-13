@@ -34,7 +34,7 @@ Welcome to connect repository. This contains all the code that I have written fo
 5. **UUID** generates a **unique meeting id**, everytime a user hits the **start meeting button**. This unique id servers as the identity to a particular meeting room.
 6. **GoogleOauth API** helps the user to login into the website using their google account. As the user hits the log in with google button and grants the permission to use their google id. I have generated the google **client ID**, and **client password**, which lets me access the user info and store the user data, after they permit by clicking on the google id. 
 7. **PassportJS** is the authentication middleware provided by NodeJS framework. The whole process of authentication is eased out as passportJS provides comprehensive strategies to login via username and password. In this case the google account information (name, google id).
-8. **PostgresSQL** is the SQL database which I have used to store the user information, messages, and room id (meeting id) so that they can be displayed after you leave the meeting.
+8. **PostgresSQL** is the SQL database which I have used to store the user information, messages, and room id (meeting id).
 
 The images folder contains infographics made by me, which explains the working og PeerJS and Google Oauth API.
 
