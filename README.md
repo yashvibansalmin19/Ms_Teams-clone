@@ -27,5 +27,5 @@ Welcome to connect repository. This contains all the code that I have written fo
 
 ## Workflow
 
-1. 
+1. ![Alt text] 
 
