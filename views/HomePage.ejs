@@ -9,15 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
     <script>
-        try {
-            const UserId = "<%= uId %>"
-            console.log(UserId)
-            localStorage.setItem("User", UserId)
-            console.log(localStorage.getItem("User"))
-        }
-        catch (err) {
-            console.log(err.message)
-        }
+        const UserName = "<%= uName %>"
+        const UserId = "<%= uId %>"
+        console.log(UserId)
+        localStorage.setItem("Username", UserName)
+        localStorage.setItem("Userid", UserId)
 
     </script>
 

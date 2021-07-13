@@ -21,6 +21,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
+const { sequelize, User, Message, Room } = require('./models')
+
 
 //static hosting using express.
 
@@ -70,7 +72,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 app.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/failed' }),
     function (req, res) {
         // Successful authentication, redirect homePage.
-        res.render('HomePage', { uId: req.user.displayName });
+        res.render('HomePage', { uName: req.user.displayName, uId: req.user.id });
     }
 );
 
@@ -90,6 +92,16 @@ app.use('/peerjs', peerserver);
 app.get('/', function (req, res) {
     res.render('login.ejs');
 })
+
+
+
+
+
+
+
+
+
+
 
 // Login & Register & Authentication to website(under development)
 
@@ -137,17 +149,54 @@ app.get('/', function (req, res) {
 //     next()
 // }
 
+
+
+
+
+
+
+
+
+
 app.get('/HomePage/', (req, res) => {
     if (!req.user || !req.user.id) {
-        res.render('HomePage.ejs', { uId: "" })
+        res.render('HomePage.ejs', { uId: "", uName: "" })
     }
     else {
-        res.render('HomePage.ejs', { uId: req.user.displayName })
+        res.render('HomePage.ejs', { uId: req.user.id, uName: req.user.displayName })
     }
 })
 
+
 app.get('/newMeeting/', (req, res) => {
-    res.redirect(`/${uuidV4()}`)
+    // Save uuidv4 to a variable newMeetingRoomId
+    const newMeetingRoomId = `${uuidV4()}` // replace 1 with uuid
+    let isLoggedIn = false
+
+    // Adding Rooms to DB
+    async function addRoom() {
+        try {
+            if (req.user && req.user.id) {
+                const user = await User.findOne({ where: { google_id: req.user.id } })
+                const createdRoom = await Room.create({ room_id: newMeetingRoomId, UserId: user.id })
+                isLoggedIn = true
+            }
+        }
+        catch (err) {
+            console.log(`ERROR >>> YOU ARE GETTING ERROR PLEASE FIX THEM >>> ${err}`)
+        }
+    }
+
+    addRoom()
+
+    res.redirect(`/${newMeetingRoomId}`)
+
+    // if (isLoggedIn == true) {
+    //     res.redirect(`/${newMeetingRoomId}`)
+    // }
+    // else {
+    //     res.redirect('/login')
+    // }
 })
 
 app.get('/:meetingId', (req, res) => {
@@ -158,6 +207,40 @@ app.get('/chatRoom/', (req, res) => {
     res.render('chatRoom.ejs');
 })
 
+app.get('/getmessagesall/:roomId', async (req, res) => {
+    const roomId = req.params.roomId
+    try {
+        const room_id = await Room.findOne({ room_id: roomId })
+        const messages = await Message.findAll({ where: { RoomId: room_id.id } })
+        // res.render("style_chat.ejs", {
+        //     rmessages: JSON.stringify(messages)
+        // })
+        return res.json(messages)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+app.post('/addmessagesall/:roomId/:text', async (req, res) => {
+    const roomId = req.params.roomId
+    const text = req.params.text
+    try {
+        const room_id = await Room.findOne({ room_id: roomId })
+        const messages = await Message.create({ RoomId: room_id.id, text: text, UserId: req.user.id })
+        // res.render("style_chat.ejs", {
+        //     rmessages: JSON.stringify(messages)
+        // })
+        return res.json(messages)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+
+
+
 // Signalling handlers
 
 io.on('connection', socket => {
@@ -167,13 +250,24 @@ io.on('connection', socket => {
 
         // messages
 
-        socket.on('message', (message, customUserId) => {
+        socket.on('message', (message, customUserName, createUserId) => {
             //send message to the same room
-            console.log(customUserId)
 
-            const saveMessage = models.models.message.findOrCreate({ where: { text: message } })
+            async function addMessage() {
+                try {
+                    let user_id = await User.findOne({ where: { google_id: createUserId } })
+                    let room_id = await Room.findOne({ where: { UserId: user_id.id } })
+                    let addedMessage = await Message.create({ text: message, UserId: user_id.id, RoomId: room_id.id })
+                    return addedMessage
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
 
-            io.to(roomId).emit('createMessage', message, customUserId)
+            addMessage()
+
+            io.to(roomId).emit('createMessage', message, customUserName)
         });
 
         socket.on('disconnect', () => {
@@ -184,8 +278,8 @@ io.on('connection', socket => {
 
 //listener
 //process.env.PORT
-models.sync().then(x => {
-    server.listen(5500, function () {
-        console.log('server running on http://localhost:5500');
+sequelize.sync({ alter: true }).then(x => {
+    server.listen(process.env.PORT, function () {
+        console.log('server running on https://connect-video-chat.herokuapp.com');
     });
 })

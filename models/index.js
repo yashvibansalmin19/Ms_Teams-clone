@@ -1,128 +1,37 @@
-const Sequelize = require('sequelize')
+'use strict';
 
-const { Model } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const db = {};
 
-const sequelize = new Sequelize('d65q5gakevpsp6', 'powszzmwuzhrdb', '1d93428f3e6f02a0286edcedbc526be2aba294e5d20245f79e275fb09fa9f604', {
-    host: 'ec2-54-145-249-177.compute-1.amazonaws.com',
-    port: 5432,
-    dialect: "postgres",
-    idleTimeoutMillis: 0,
-    connectionTimeoutMillis: 0,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    },
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-//UNDER DEVELOPMENT
-
-class User extends Model { }
-User.init({
-    googleId: Sequelize.STRING
-}, {
-    sequelize,
-    modelName: 'user'
-});
-
-class Room extends Model { }
-Room.init({
-    roomId: Sequelize.STRING,
-    startTime: Sequelize.STRING
-}, {
-    sequelize,
-    modelName: 'room'
-});
-
-class Message extends Model { }
-Message.init({
-    text: Sequelize.STRING
-}, {
-    sequelize,
-    modelName: 'message'
-});
-
-Room.hasMany(Message);
-User.hasMany(Message);
-User.hasMany(Room);
-
-
-module.exports = sequelize;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// class User extends Model { }
-// User.init({
-//     googleId: Sequelize.STRING
-// }, {
-//     sequelize,
-//     modelName: 'user'
-// });
-
-// class Token extends Model { }
-// Token.init({
-//     name: Sequelize.STRING
-// }, {
-//     sequelize,
-//     modelName: 'tokens'
-// });
-
-// User.hasMany(Token);
-
-// class Room extends Model { }
-// Room.init({
-//     roomId: Sequelize.STRING,
-//     startTime: Sequelize.TIME
-// }, {
-//     sequelize,
-//     modelName: 'room'
-// });
-
-// class Message extends Model { }
-// Message.init({
-//     text: Sequelize.STRING
-// }, {
-//     sequelize,
-//     modelName: 'message'
-// });
-
-// Room.hasMany(Message);
-// User.hasMany(Message);
-
-// module.exports = sequelize;
+module.exports = db;

@@ -3,21 +3,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const Sequelize = require('sequelize')
 
-const { Model } = require('sequelize');
+const { sequelize, User, Message, Room } = require('./models')
 
-const sequelize = new Sequelize('d65q5gakevpsp6', 'powszzmwuzhrdb', '1d93428f3e6f02a0286edcedbc526be2aba294e5d20245f79e275fb09fa9f604', {
-    host: 'ec2-54-145-249-177.compute-1.amazonaws.com',
-    port: 5432,
-    dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    },
-});
 
-const models = require('./models')
 
 passport.serializeUser(function (user, done) {
     /*
@@ -43,10 +31,17 @@ passport.use(new GoogleStrategy({
     callbackURL: `http://localhost:5500/auth/google/redirect`
 },
     function (accessToken, refreshToken, profile, done) {
-        (async () => {
-            const user = await models.models.user.findOrCreate({ where: { googleId: profile.id } })
-            return done(null, user);
-        })();
+        async function addUser() {
+            try {
+                const user = await User.findOrCreate({ where: { google_id: profile.id, username: profile.displayName } })
+                return user
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        addUser()
         /*
          use the profile info (mainly profile id) to check if the user is registerd in ur db
          If yes select the user and pass him to the done callback

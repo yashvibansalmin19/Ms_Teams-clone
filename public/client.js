@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 let myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '5500'
+    port: '443'
 })
 
 let localVideo;
@@ -18,7 +18,6 @@ navigator.mediaDevices.getUserMedia({  // storing and displaying local video str
     MyVideo.muted = true
     localVideo = stream;
     addVideoStream(MyVideo, stream)
-    prompt('Press "ctrl+c" to copy meeting URL:', window.location);
     socket.on('user-connected', userId => {
         connectToNewUser(userId, stream)
     })
@@ -31,7 +30,8 @@ navigator.mediaDevices.getUserMedia({  // storing and displaying local video str
 
     $('html').keydown(function (e) {
         if (e.which == 13 && text.val().length !== 0) {
-            socket.emit('message', text.val(), localStorage.getItem("User"));
+            console.log(localStorage.getItem("Username"), localStorage.getItem("Userid"))
+            socket.emit('message', text.val(), localStorage.getItem("Username"), localStorage.getItem("Userid"));
             text.val('')
         }
     });
@@ -138,22 +138,15 @@ function on_off() {
     }
 }
 
-// Share your screen (under development)
+// Copy meeting URL
 
-function shareScreen() {
-    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
-        const screenTrack = localVideo.getTracks()[0];
-        for (let x = 0; x < peers.length; x++) {
-            let sender = peers[x].getSenders().find(function (s) {
-                return s.track.kind == screenTrack.kind;
-            })
-            sender.replaceTrack(screenTrack);
-        }
-        // peers.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
-        // screenTrack.onended = function () {
-        //     peers.find(sender => sender.track.kind === "video").replaceTrack(localVideo.getTracks()[1]);
-        // }
-    })
+function CopyURL() {
+    var URL = document.createElement("input");
+    URL.value = window.location.href;
+    document.body.appendChild(URL);
+    URL.select();
+    document.execCommand("copy");
+    alert("URL copied to clipboard")
 }
 
 //Changing icon on click
