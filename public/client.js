@@ -3,11 +3,12 @@ const videoGrid = document.getElementById('video-grid')
 let myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '5500'
 })
 
 let localVideo;
 let remoteVideo;
+let peers = [];
 
 navigator.mediaDevices.getUserMedia({  // storing and displaying local video stream
     video: true,
@@ -86,6 +87,7 @@ function connectToNewUser(userId, stream) {
     })
 
     peers[userId] = call
+
 }
 
 function addVideoStream(video, stream) {
@@ -138,15 +140,21 @@ function on_off() {
 
 // Share your screen (under development)
 
-// function shareScreen() {
-//     navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
-//         const screenTrack = stream.getTracks()[0];
-//         peers[userId].current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
-//         screenTrack.onended = function () {
-//             peers[userId].current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
-//         }
-//     })
-// }
+function shareScreen() {
+    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
+        const screenTrack = localVideo.getTracks()[0];
+        for (let x = 0; x < peers.length; x++) {
+            let sender = peers[x].getSenders().find(function (s) {
+                return s.track.kind == screenTrack.kind;
+            })
+            sender.replaceTrack(screenTrack);
+        }
+        // peers.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
+        // screenTrack.onended = function () {
+        //     peers.find(sender => sender.track.kind === "video").replaceTrack(localVideo.getTracks()[1]);
+        // }
+    })
+}
 
 //Changing icon on click
 

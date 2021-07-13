@@ -138,8 +138,8 @@ app.get('/', function (req, res) {
 // }
 
 app.get('/HomePage/', (req, res) => {
-    if (!req.user.id) {
-        res.render('Homepage .ejs', { uId: "" })
+    if (!req.user || !req.user.id) {
+        res.render('HomePage.ejs', { uId: "" })
     }
     else {
         res.render('HomePage.ejs', { uId: req.user.displayName })
@@ -181,7 +181,7 @@ io.on('connection', socket => {
 //listener
 //process.env.PORT
 models.sync().then(x => {
-    server.listen(process.env.PORT, function () {
-        console.log('server running on https://connect-video-chat.herokuapp.com/');
+    server.listen(5500, function () {
+        console.log('server running on http://localhost:5500');
     });
 })
