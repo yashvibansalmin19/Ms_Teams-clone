@@ -38,6 +38,6 @@ Welcome to connect repository. This contains all the code that I have written fo
 
 The images folder contains infographics made by me, which explains the working og PeerJS and Google Oauth API.
 
-I have tried to build this project under Microsoft Engage Program' 21. This is my first experience with thid developing environment. I tried to deliver the in these 4 weeks. I hope you find it good.
+I have tried to build this project under Microsoft Engage Program' 21. This is my first experience with thid developing environment. I tried to deliver the in these 4 weeks. I hope you find it good. Link to the website: https://connect-video-chat.herokuapp.com/
 
 Thank you!
