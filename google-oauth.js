@@ -28,7 +28,7 @@ passport.deserializeUser(function (user, done) {
 passport.use(new GoogleStrategy({
     clientID: "5610789853-cgup6npmfrebr5sl8kfs63h6ovd83ti9.apps.googleusercontent.com",
     clientSecret: "0zA3EONrT63mui2ygwBIyNiX",
-    callbackURL: `http://localhost:5500/auth/google/redirect`
+    callbackURL: `https://connect-video-chat.herokuapp.com/auth/google/redirect`
 },
     function (accessToken, refreshToken, profile, done) {
         async function addUser() {
