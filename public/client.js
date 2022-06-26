@@ -113,7 +113,7 @@ function muteunmute() {
         console.log("audio on");
         localVideo.getAudioTracks()[0].enabled = true;
         setMuteButton();
-        document.getElementById("mute_unmute").style.background = '#0088D6';
+        document.getElementById("mute_unmute").style.background = '#5d01a8';
         document.getElementById("mute_unmute").title = 'mute';
     }
 }
@@ -133,7 +133,7 @@ function on_off() {
         console.log("video on");
         localVideo.getVideoTracks()[0].enabled = true;
         setStopVideo();
-        document.getElementById("video_on_off").style.background = '#0088D6';
+        document.getElementById("video_on_off").style.background = '#5d01a8';
         document.getElementById("video_on_off").title = 'video off';
     }
 }
