@@ -126,7 +126,7 @@ function on_off() {
         console.log("video off");
         localVideo.getVideoTracks()[0].enabled = false;
         setPlayVideo();
-        document.getElementById("video_on_off").style.background = '#5d01a8';
+        document.getElementById("video_on_off").style.background = '#FF0000';
         document.getElementById("video_on_off").title = 'video on';
     }
     else {
