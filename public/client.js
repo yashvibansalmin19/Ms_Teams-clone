@@ -25,11 +25,38 @@ async function init() {
         myVideo.setAttribute('data-peer', 'local');
         addVideoStream(myVideo, localStream, 'local');
 
+        // ICE servers for NAT traversal (STUN for discovery, TURN for relay)
+        const iceServers = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' },
+                {
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                }
+            ]
+        };
+
         // Now initialize PeerJS after we have the stream
         myPeer = new Peer(undefined, {
             path: '/peerjs',
             host: '/',
-            port: location.port || (location.protocol === 'https:' ? '443' : '80')
+            port: location.port || (location.protocol === 'https:' ? '443' : '80'),
+            config: iceServers
         });
 
         // When peer connection opens
