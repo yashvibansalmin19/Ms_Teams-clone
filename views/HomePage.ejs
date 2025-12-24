@@ -1,68 +1,111 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNECT - Home</title>
+    <link rel="shortcut icon" href="/video-conference.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styleNew.css">
     <script>
-        const UserName = "<%= uName %>"
-        const UserId = "<%= uId %>"
-        console.log(UserId)
-        localStorage.setItem("Username", UserName)
-        localStorage.setItem("Userid", UserId)
-
+        const UserName = "<%= uName %>";
+        const UserId = "<%= uId %>";
+        if (UserName) localStorage.setItem("Username", UserName);
+        if (UserId) localStorage.setItem("Userid", UserId);
     </script>
-
-    <script src='https://use.fontawesome.com/aa2b8cb467.js ' crossorigin='anonymous'></script>
-
-    <title>CONNECT</title>
-
-    <link rel="shortcut icon" type="text/css" href="/video-conference.png">
-    <link rel="stylesheet" type="text/css" href="/styleNew.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 
-<body style="margin: 0;">
-
-    <div id="login" class="container-fluid">
-
-
-        <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
-            <div class="container-fluid">
-                <a class="navbar-brand"> <img src="/video-conference.png" alt="" width="40" height="40"
-                        class="d-inline-block" style="background: var(--bs-white); padding: 10px; float: left;"></img>
-                    CONNECT
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="/video-conference.png" alt="Connect Logo" width="36" height="36">
+            <span>CONNECT</span>
+        </div>
+        <div class="nav-user">
+            <% if (uName) { %>
+                <span class="user-greeting">Hello, <%= uName %></span>
+                <div class="user-avatar"><%= uName.charAt(0).toUpperCase() %></div>
+            <% } else { %>
+                <a href="/" class="sign-in-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Sign In</span>
                 </a>
+            <% } %>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Video meetings for everyone</h1>
+            <p>Connect with colleagues, friends, and family with secure, high-quality video calls.</p>
+
+            <div class="action-cards">
+                <a href="/newMeeting/" class="action-card primary">
+                    <div class="card-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>New Meeting</h3>
+                        <p>Start an instant video call</p>
+                    </div>
+                    <i class="fas fa-arrow-right card-arrow"></i>
+                </a>
+
+                <div class="action-card secondary" id="joinCard">
+                    <div class="card-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Join Meeting</h3>
+                        <input type="text" id="meetingCode" placeholder="Enter meeting code" aria-label="Meeting code">
+                    </div>
+                    <button class="join-btn" onclick="joinMeeting()" aria-label="Join meeting">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
-        </nav>
 
-        <div class="container">
-            <div class="d-flex justify-content-center h-100">
-                <div class="card d-block justify-content-center">
-                    <div class="card-header">
-                        <h2><strong>Collaborate</strong> and celebrate</h2>
-                    </div>
-                    <div class="card-body">
-                        <div><a href="/newMeeting/"><button class="btn btn-primary d-block w-250" type="button"
-                                    title="start meeting">Start
-                                    Meeting</button></a><br></br>
-                        </div>
-                        <div><a href='/chatRoom/'><button class="btn btn-primary d-block w-250" type="button"
-                                    title="chat">Chat</button></a>
-                        </div>
-
-                    </div>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure & encrypted</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <span>Multiple participants</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-comments"></i>
+                    <span>In-call messaging</span>
                 </div>
             </div>
         </div>
-    </div>
 
+        <div class="hero-illustration">
+            <div class="illustration-grid">
+                <div class="video-tile tile-1"><i class="fas fa-user"></i></div>
+                <div class="video-tile tile-2"><i class="fas fa-user"></i></div>
+                <div class="video-tile tile-3"><i class="fas fa-user"></i></div>
+                <div class="video-tile tile-4"><i class="fas fa-user"></i></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function joinMeeting() {
+            const code = document.getElementById('meetingCode').value.trim();
+            if (code) {
+                window.location.href = '/' + code;
+            }
+        }
+
+        document.getElementById('meetingCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                joinMeeting();
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -26,27 +26,19 @@ passport.deserializeUser(function (user, done) {
 });
 
 passport.use(new GoogleStrategy({
-    clientID: "5610789853-cgup6npmfrebr5sl8kfs63h6ovd83ti9.apps.googleusercontent.com",
-    clientSecret: "0zA3EONrT63mui2ygwBIyNiX",
-    callbackURL: `https://connect-video-chat.herokuapp.com/auth/google/redirect`
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/redirect'
 },
-    function (accessToken, refreshToken, profile, done) {
-        async function addUser() {
-            try {
-                const user = await User.findOrCreate({ where: { google_id: profile.id, username: profile.displayName } })
-                return user
-            }
-            catch (err) {
-                console.log(err)
-            }
+    async function (accessToken, refreshToken, profile, done) {
+        try {
+            await User.findOrCreate({
+                where: { google_id: profile.id, username: profile.displayName }
+            });
+            return done(null, profile);
+        } catch (err) {
+            console.error('Error saving user:', err);
+            return done(err, null);
         }
-
-        addUser()
-        /*
-         use the profile info (mainly profile id) to check if the user is registerd in ur db
-         If yes select the user and pass him to the done callback
-         If not create the user and then select him and pass to callback
-        */
-        return done(null, profile);
     }
 ));

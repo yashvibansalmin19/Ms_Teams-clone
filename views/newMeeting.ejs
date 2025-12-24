@@ -1,85 +1,109 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNECT - Meeting</title>
+    <link rel="shortcut icon" href="/video-conference.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-
-    <script> const ROOM_ID = "<%= roomId %>"</script>
+    <script>const ROOM_ID = "<%= roomId %>";</script>
     <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
-    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-a11y="true"></script>
     <script defer src="/socket.io/socket.io.js"></script>
-    <script defer src="client.js"></script>
-
-    <title>CONNECT</title>
-
-    <link rel="shortcut icon" href="video-conference.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <script defer src="/client.js"></script>
 </head>
 
 <body>
-    <div class='main'>
+    <div class="meeting-container">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div id="video-grid"></div>
 
-        <div class='left_side'>
-            <div id="videoPage" class="container" style="background-color: #1a1a1a;">
+            <!-- Control Bar -->
+            <div class="control-bar">
+                <div class="controls-left">
+                    <span class="meeting-time" id="meetingTime">00:00</span>
+                </div>
 
-                <div id="video-grid"></div>
+                <div class="controls-center">
+                    <button id="mute_unmute" class="control-btn" onclick="muteunmute()" title="Toggle microphone" aria-label="Toggle microphone">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button id="video_on_off" class="control-btn" onclick="on_off()" title="Toggle camera" aria-label="Toggle camera">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="control-btn" onclick="CopyURL()" title="Copy meeting link" aria-label="Copy meeting link">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <button id="toggleChat" class="control-btn" onclick="toggleChat()" title="Toggle chat" aria-label="Toggle chat">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                    <a href="/HomePage/" class="control-btn leave-btn" title="Leave meeting" aria-label="Leave meeting">
+                        <i class="fas fa-phone-slash"></i>
+                    </a>
+                </div>
 
-            </div>
-            <div class="container">
-                <div id="buttons" class="row">
-                    <div class="col-md-3">
-                        <button id="mute_unmute" class="button1 muteUnmute" onclick="muteunmute()"><i
-                                class="fas fa-microphone"></i></button>
-                    </div>
-                    <div class="col-md-3">
-                        <button id="video_on_off" class="button1 videoOnOff" title="video off" onclick="on_off()"><i
-                                class="fas fa-video" style="vertical-align: middle;"></i></button>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="button1" title="copy url to clipboard" value="Copy Url" onclick="CopyURL()"><i
-                                class="fa fa-clipboard"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-3">
-                        <a href="/HomePage/"> <button id="leave" style="color: white; background-color: red;"
-                                class="button1" title="leave meeting"><i class="fas fa-phone"></i></button></a>
-                    </div>
+                <div class="controls-right">
+                    <span class="participant-count" id="participantCount">
+                        <i class="fas fa-user"></i> <span>1</span>
+                    </span>
                 </div>
             </div>
         </div>
 
-
-        <div class="right_side">
-            <div class="header" style="background-color: #52307c; height: 10px;">
-                <h4 style="font-family:Arial, Helvetica, sans-serif;">Chat</h4>
+        <!-- Chat Section -->
+        <div class="chat-section" id="chatSection">
+            <div class="chat-header">
+                <h3><i class="fas fa-comments"></i> Chat</h3>
+                <button class="close-chat-btn" onclick="toggleChat()" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <br></br>
-            <div class="chat_window">
+
+            <div class="chat-messages" id="chatMessages">
                 <ul class="messages"></ul>
             </div>
-            <div class="message_container">
-                <input id="chat_message" type="text" placeholder="Type message here..." style="width: 250px;">
+
+            <div class="chat-input-container">
+                <input type="text" id="chat_message" placeholder="Type a message..." aria-label="Chat message">
+                <button class="send-btn" onclick="sendMessage()" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" //
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" //
-        crossorigin="anonymous"></script>
+    <!-- Toast notification -->
+    <div class="toast" id="toast">Link copied to clipboard!</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" //
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" //
-        crossorigin="anonymous"></script>
-    //
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" //
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" //
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Meeting timer
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('meetingTime').textContent = `${mins}:${secs}`;
+        }, 1000);
 
+        // Toggle chat panel
+        function toggleChat() {
+            const chatSection = document.getElementById('chatSection');
+            chatSection.classList.toggle('open');
+        }
+
+        // Send message on button click
+        function sendMessage() {
+            const input = document.getElementById('chat_message');
+            if (input.value.trim()) {
+                const event = new KeyboardEvent('keydown', { which: 13, keyCode: 13 });
+                input.dispatchEvent(event);
+            }
+        }
+    </script>
 </body>
 
 </html>
