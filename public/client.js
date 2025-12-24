@@ -144,6 +144,12 @@ function addVideoStream(video, stream, peerId) {
     video.srcObject = stream;
     video.setAttribute('data-peer', peerId);
 
+    // Required for mobile browsers
+    video.setAttribute('playsinline', '');
+    video.setAttribute('autoplay', '');
+    video.playsInline = true;
+    video.autoplay = true;
+
     video.addEventListener('loadedmetadata', () => {
         video.play().catch(err => console.error('Video play error:', err));
     });
