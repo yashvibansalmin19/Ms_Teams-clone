@@ -25,17 +25,22 @@ async function init() {
         myVideo.setAttribute('data-peer', 'local');
         addVideoStream(myVideo, localStream, 'local');
 
+        // Fetch TURN credentials from Metered API
+        let iceServers = [{ urls: 'stun:stun.l.google.com:19302' }];
+        try {
+            const response = await fetch('https://connect-video-app.metered.live/api/v1/turn/credentials?apiKey=93f0c8b9ce8ac1f7d9c807394c0ac85c4dfe');
+            iceServers = await response.json();
+            console.log('TURN credentials loaded');
+        } catch (err) {
+            console.error('Failed to fetch TURN credentials:', err);
+        }
+
         // Now initialize PeerJS after we have the stream
         myPeer = new Peer(undefined, {
             path: '/peerjs',
             host: '/',
             port: location.port || (location.protocol === 'https:' ? '443' : '80'),
-            config: {
-                iceServers: [
-                    { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' }
-                ]
-            }
+            config: { iceServers }
         });
 
         // When peer connection opens
