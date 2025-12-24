@@ -98,9 +98,12 @@
         // Send message on button click
         function sendMessage() {
             const input = document.getElementById('chat_message');
-            if (input.value.trim()) {
-                const event = new KeyboardEvent('keydown', { which: 13, keyCode: 13 });
-                input.dispatchEvent(event);
+            if (input && input.value.trim()) {
+                const message = input.value.trim();
+                const username = localStorage.getItem('Username') || 'Guest';
+                const userId = localStorage.getItem('Userid') || '';
+                socket.emit('message', message, username, userId);
+                input.value = '';
             }
         }
     </script>
