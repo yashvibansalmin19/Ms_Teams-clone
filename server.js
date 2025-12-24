@@ -177,9 +177,14 @@ app.post('/addmessagesall/:roomId', async (req, res) => {
 
 // Socket.io signalling handlers
 io.on('connection', socket => {
-    socket.on('join-room', (roomId, userId) => {
+    socket.on('join-room', (roomId, peerId, username) => {
         socket.join(roomId);
-        socket.broadcast.to(roomId).emit('user-connected', userId);
+        socket.peerId = peerId;
+        socket.roomId = roomId;
+        socket.username = username || 'Guest';
+
+        // Notify others that a new user connected (with username)
+        socket.broadcast.to(roomId).emit('user-connected', peerId, username);
 
         // Handle chat messages
         socket.on('message', async (message, customUserName, createUserId) => {
@@ -202,8 +207,13 @@ io.on('connection', socket => {
             io.to(roomId).emit('createMessage', message, customUserName);
         });
 
+        // Handle user status updates (mute/video toggle)
+        socket.on('user-status', (status) => {
+            socket.broadcast.to(roomId).emit('user-status-update', peerId, status);
+        });
+
         socket.on('disconnect', () => {
-            socket.broadcast.to(roomId).emit('user-disconnected', userId);
+            socket.broadcast.to(roomId).emit('user-disconnected', peerId);
         });
     });
 });

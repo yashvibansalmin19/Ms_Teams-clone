@@ -64,21 +64,98 @@ body {
     min-height: 0;
 }
 
-#video-grid video {
+/* Video Tile Container */
+.video-tile {
+    position: relative;
     width: 100%;
     max-width: 300px;
-    height: auto;
     aspect-ratio: 4/3;
-    object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px;
+    overflow: hidden;
     background: var(--bg-card);
     box-shadow: var(--shadow);
 }
 
-/* Single video takes more space */
-#video-grid video:only-child {
+.video-tile video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+/* Avatar placeholder (shown when video is off) */
+.video-avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+.video-avatar span {
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+}
+
+.video-tile.video-off .video-avatar {
+    display: flex;
+}
+
+/* Bottom overlay with name and mic */
+.video-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.video-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.video-mic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.video-mic.muted {
+    background: var(--danger-color);
+}
+
+/* Single video tile takes more space */
+#video-grid .video-tile:only-child {
     max-width: 90%;
     max-height: 70vh;
+}
+
+#video-grid .video-tile:only-child .video-avatar span {
+    font-size: 80px;
 }
 
 /* Control Bar - Mobile First */
@@ -378,20 +455,23 @@ body {
         gap: 12px;
     }
 
-    #video-grid video {
+    .video-tile {
         max-width: 400px;
         aspect-ratio: 16/9;
-        border-radius: 12px;
     }
 
-    #video-grid video:only-child {
+    #video-grid .video-tile:only-child {
         max-width: 800px;
     }
 
     /* Two videos side by side on tablet */
-    #video-grid video:first-child:nth-last-child(2),
-    #video-grid video:first-child:nth-last-child(2) ~ video {
+    #video-grid .video-tile:first-child:nth-last-child(2),
+    #video-grid .video-tile:first-child:nth-last-child(2) ~ .video-tile {
         max-width: 45%;
+    }
+
+    .video-avatar span {
+        font-size: 56px;
     }
 
     .meeting-time,
@@ -433,8 +513,12 @@ body {
         padding: 8px;
     }
 
-    #video-grid video {
+    .video-tile {
         max-height: 50vh;
+    }
+
+    .video-avatar span {
+        font-size: 32px;
     }
 }
 
